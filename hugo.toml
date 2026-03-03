@@ -1,0 +1,6 @@
+baseURL = 'https://lqlang.org'
+languageCode = 'en-us'
+title = 'LQ Programming Language'
+theme = 'PaperMod'
+[params]
+author = 'Jim Laskey'

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Spock Does Not Code in ASCII | LQ Programming Language</title>
+<meta name="keywords" content="">
+<meta name="description" content="Why the future of programming looks nothing like a text file
+
+It&rsquo;s 2026, and we&rsquo;re still typing if (x &gt; 0) { return true; } into monospaced text editors like it&rsquo;s a teletype terminal in 1957. We&rsquo;ve reinvented every other human-computer interface — touch, voice, gesture, spatial computing — and yet the act of programming remains stubbornly anchored to sequential lines of ASCII characters. Rows of glyphs. Typed one keystroke at a time. Into a rectangle.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/spock-does-not-code-in-ascii/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.da3211e5ef867bf2b75fd5a6515cfed7195c011e8ab735694e203810a827097b.css" integrity="sha256-2jIR5e&#43;Ge/K3X9WmUVz&#43;1xlcAR6KtzVpTiA4EKgnCXs=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/spock-does-not-code-in-ascii/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Spock Does Not Code in ASCII
+    </h1>
+    <div class="post-meta"><span title='2026-03-03 10:16:58 -0400 AST'>March 3, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p><em>Why the future of programming looks nothing like a text file</em></p>
+<hr>
+<p>It&rsquo;s 2026, and we&rsquo;re still typing <code>if (x &gt; 0) { return true; }</code> into monospaced text editors like it&rsquo;s a teletype terminal in 1957. We&rsquo;ve reinvented every other human-computer interface — touch, voice, gesture, spatial computing — and yet the act of <em>programming</em> remains stubbornly anchored to sequential lines of ASCII characters. Rows of glyphs. Typed one keystroke at a time. Into a rectangle.</p>
+<p>Why?</p>
+<p>Not because it&rsquo;s optimal. Because it&rsquo;s <em>familiar</em>. And familiarity, in computing, is the most dangerous form of inertia.</p>
+<h2 id="the-teletype-hangover">The Teletype Hangover<a hidden class="anchor" aria-hidden="true" href="#the-teletype-hangover">#</a></h2>
+<p>Textual programming languages descend directly from the constraints of 1940s and 1950s hardware. Punched cards. Line printers. Fixed-width character sets. When Grace Hopper et al designed the first compilers, the <em>only</em> output device was a printer. The only input device was a card reader or paper tape. Of course the language looked like text — what else could it look like?</p>
+<p>But here&rsquo;s the thing: those constraints evaporated decades ago. We have retina displays capable of rendering millions of pixels in real time. Multi-touch surfaces. Stylus input with sub-millimeter precision. GPUs that can composite thousands of graphical objects at 120 frames per second. And yet, the dominant model for expressing computation is still a sequence of characters arranged left-to-right, top-to-bottom, in a monospaced font.</p>
+<p>That&rsquo;s not tradition. That&rsquo;s a failure of imagination.</p>
+<h2 id="the-keyboard-is-leaving-the-room">The Keyboard Is Leaving the Room<a hidden class="anchor" aria-hidden="true" href="#the-keyboard-is-leaving-the-room">#</a></h2>
+<p>Look around. The dominant computing devices on the planet — phones and tablets — don&rsquo;t have hardware keyboards. Over three billion people carry a smartphone. Most of them have never owned a device with a physical keyboard attached. The keyboard was once the assumed gateway to computing power. Now it&rsquo;s an optional accessory.</p>
+<p>And yet, if any of those three billion people want to <em>program</em> — to express logic, to define behavior, to build something computational — we hand them a miniature on-screen QWERTY keyboard and say &ldquo;type this syntax exactly right, semicolons and all.&rdquo;</p>
+<p>We&rsquo;ve made computing universal and programming exclusionary. In the same breath.</p>
+<p>The emergence of touch-first, keyboard-optional computing isn&rsquo;t a trend. It&rsquo;s the settled reality. The question isn&rsquo;t whether programming will adapt. It&rsquo;s why it hasn&rsquo;t already.</p>
+<h2 id="what-diagrams-get-right">What Diagrams Get Right<a hidden class="anchor" aria-hidden="true" href="#what-diagrams-get-right">#</a></h2>
+<p>Dataflow is not inherently sequential. A computation that filters a list, transforms each element, and reduces the result to a single value is a <em>graph</em> — a set of operations connected by data dependencies. Writing it as a sequence of lines imposes a false ordering. You have to read the whole function, mentally reconstruct the dependency graph, and hold it in your head.</p>
+<p>A diagram just <em>shows</em> you the graph. The structure is the syntax. The layout is the logic.</p>
+<p>This is what diagrammatic languages are built on. Visual programming with relational dataflow architecture. Programs are two-dimensional diagrams: nodes represent operations, terminals represent inputs and outputs, and wires represent the flow of data. There is no ambiguity about what depends on what. There is no invisible control flow hidden behind syntactic conventions. The diagram <em>is</em> the program, and the program <em>is</em> the diagram.</p>
+<p>In a well-designed diagrammatic language, closures are first-class structural elements — compile-time constructs that dissolve into native control flow. Stacking nodes to express alternatives. Abutting nodes to form new constructs. The visual grammar maps directly to the computational semantics, without the indirection of parsing text into a tree, then interpreting the tree as a graph.</p>
+<p>This is not a &ldquo;node editor bolted onto a scripting language.&rdquo; This is a language designed from the ground up for two-dimensional expression, targeting native code.</p>
+<h2 id="ai-changes-the-equation">AI Changes the Equation<a hidden class="anchor" aria-hidden="true" href="#ai-changes-the-equation">#</a></h2>
+<p>Here&rsquo;s where it gets interesting. AI code generation — the thing everyone is excited about right now — is fundamentally a text-to-text operation. You describe what you want in natural language (text), and an LLM produces source code (more text). It works because LLMs are extraordinary at manipulating token sequences.</p>
+<p>But think about what that means for the <em>programmer</em>. Your job is increasingly to describe intent, review output, and verify behavior. You&rsquo;re not typing <code>for (int i = 0; i &lt; n; i++)</code> — the machine does that. You&rsquo;re thinking about <em>what</em> should happen, <em>what</em> data flows where, and <em>what</em> the structure of the computation looks like.</p>
+<p>That&rsquo;s a visual task. That&rsquo;s a diagrammatic task.</p>
+<p>AI doesn&rsquo;t eliminate the need for programming languages. It eliminates the need for <em>typing</em> programming languages. And once typing is out of the picture, the entire rationale for text-based syntax collapses. What remains is the need to <em>see</em> the structure, <em>manipulate</em> the connections, and <em>understand</em> the flow. Diagrams do all three better than text ever has.</p>
+<p>Imagine pointing an AI at a visual dataflow diagram and saying &ldquo;add error handling to this pipeline&rdquo; — and watching the diagram restructure itself in front of you. No diff to parse. No merge conflict in line 347. The change is spatially coherent and immediately visible.</p>
+<h2 id="but-visual-programming-has-been-tried-before">&ldquo;But Visual Programming Has Been Tried Before&rdquo;<a hidden class="anchor" aria-hidden="true" href="#but-visual-programming-has-been-tried-before">#</a></h2>
+<p>Yes. And most attempts failed. But they failed for specific, identifiable reasons — not because the concept is flawed.</p>
+<p>Early visual languages (LabVIEW, Simulink, Scratch) were either domain-specific, pedagogical, or limited to wiring together pre-built black boxes. They didn&rsquo;t offer the expressive power of a general-purpose language. They didn&rsquo;t compile to efficient native code. And they were designed in an era when every programmer had a keyboard, a large monitor, and no expectation of touch input.</p>
+<p>None of those conditions hold anymore.</p>
+<p>Diagrammatic programming is designed for the current moment: touch-capable hardware, AI-assisted development, LLVM-grade compilation, and a computational model — relational dataflow — that is inherently parallel and inherently visual. Closures-all-the-way-down architecture means that the visual grammar scales from trivial expressions to complex systems without devolving into spaghetti wiring diagrams.</p>
+<p>The previous generation of visual programming failed because it brought a graphical skin to a textual paradigm. This visual approach starts from the diagram and builds the language around it.</p>
+<h2 id="the-real-question">The Real Question<a hidden class="anchor" aria-hidden="true" href="#the-real-question">#</a></h2>
+<p>Every other engineering discipline made the jump from text to diagrams long ago. Electrical engineers don&rsquo;t describe circuits in prose. Architects don&rsquo;t write buildings as code. Mechanical engineers don&rsquo;t specify assemblies in paragraphs. They draw. They diagram. They work in two dimensions because two dimensions carry more information per unit of cognitive effort than one.</p>
+<p>Software engineering is the holdout. The last discipline where &ldquo;literacy&rdquo; means the ability to read and write sequential text files. The last discipline where spatial reasoning — the most powerful cognitive tool humans possess — is deliberately excluded from the creative process.</p>
+<p>Spock — the logical one, the one who would choose the optimal representation for any problem — would not code in ASCII. He would look at a text editor and ask why we are voluntarily discarding an entire spatial dimension of expression. He would find it&hellip; illogical.</p>
+<p>Diagrammatic programming is an answer to that question. Not the only answer. But a serious one — built on a real compiler, a real computational model, and the real trajectory of how humans interact with machines.</p>
+<p>The keyboards are leaving. The AI is arriving. The diagrams are waiting.</p>
+<p>It&rsquo;s time.</p>
+<hr>
+<p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Related blogs to follow.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

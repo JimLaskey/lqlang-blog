@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>LQ Programming Language</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on LQ Programming Language</description>
+    <generator>Hugo -- 0.157.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 03 Mar 2026 10:16:58 -0400</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spock Does Not Code in Ascii</title>
+      <link>http://localhost:1313/blog/spock-does-not-code-in-ascii/</link>
+      <pubDate>Tue, 03 Mar 2026 10:16:58 -0400</pubDate>
+      <guid>http://localhost:1313/blog/spock-does-not-code-in-ascii/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Why the future of programming looks nothing like a text file&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;It&amp;rsquo;s 2026, and we&amp;rsquo;re still typing &lt;code&gt;if (x &amp;gt; 0) { return true; }&lt;/code&gt; into monospaced text editors like it&amp;rsquo;s a teletype terminal in 1957. We&amp;rsquo;ve reinvented every other human-computer interface — touch, voice, gesture, spatial computing — and yet the act of &lt;em&gt;programming&lt;/em&gt; remains stubbornly anchored to sequential lines of ASCII characters. Rows of glyphs. Typed one keystroke at a time. Into a rectangle.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
