@@ -1,0 +1,27 @@
+{{- $authorName := .Params.author | default site.Params.author }}
+{{- if $authorName }}
+{{- $authorPage := false }}
+{{- with site.GetPage "section" "authors" }}
+  {{- range .Pages }}
+    {{- if eq .Params.name $authorName }}
+      {{- $authorPage = . }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- if $authorPage }}
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="{{ $authorPage.Permalink }}">{{ $authorPage.Params.name }}</a>
+  </div>
+  {{- with $authorPage.Content }}
+  <div class="author-bio">{{ . }}</div>
+  {{- end }}
+  {{- with $authorPage.Params.linkedin }}
+  <div class="author-links">
+    <a href="{{ . }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+  {{- end }}
+</aside>
+{{- end }}
+{{- end }}

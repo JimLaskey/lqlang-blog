@@ -2,6 +2,7 @@
 date = '2026-03-03T10:16:58-04:00'
 draft = false
 title = 'Spock Does Not Code in ASCII'
+author = 'Jim Laskey'
 +++
 
 *Why the future of programming looks nothing like a text file*
@@ -84,4 +85,3 @@ It's time.
 
 ---
 
-Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Related blogs to follow.
