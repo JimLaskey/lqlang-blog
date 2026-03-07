@@ -17,11 +17,14 @@
   {{- with $authorPage.Content }}
   <div class="author-bio">{{ . }}</div>
   {{- end }}
-  {{- with $authorPage.Params.linkedin }}
   <div class="author-links">
+    {{- with $authorPage.Params.email }}
+    <a href="mailto:{{ . }}">{{ . }}</a>
+    {{- end }}
+    {{- with $authorPage.Params.linkedin }}
     <a href="{{ . }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    {{- end }}
   </div>
-  {{- end }}
 </aside>
 {{- end }}
 {{- end }}

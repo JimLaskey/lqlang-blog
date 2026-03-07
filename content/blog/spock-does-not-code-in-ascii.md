@@ -3,6 +3,7 @@ date = '2026-03-03T10:16:58-04:00'
 draft = false
 title = 'Spock Does Not Code in ASCII'
 author = 'Jim Laskey'
+tags = ["programming", "coding", "ai", "claude", "dataflow", "languages", "visual-programming", "parallelism", "future-of-code", "programming-languages", "manifesto",  "LLM"]
 +++
 
 *Why the future of programming looks nothing like a text file*

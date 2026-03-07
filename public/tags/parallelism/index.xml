@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Parallelism on LQ Programming Language</title>
+    <link>https://lqlang.org/tags/parallelism/</link>
+    <description>Recent content in Parallelism on LQ Programming Language</description>
+    <generator>Hugo -- 0.157.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 07 Mar 2026 05:31:11 -0400</lastBuildDate>
+    <atom:link href="https://lqlang.org/tags/parallelism/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Robots Dream in Dataflow</title>
+      <link>https://lqlang.org/blog/robots-dream-in-dataflow/</link>
+      <pubDate>Sat, 07 Mar 2026 05:31:11 -0400</pubDate>
+      <guid>https://lqlang.org/blog/robots-dream-in-dataflow/</guid>
+      <description>&lt;p&gt;You&amp;rsquo;re a neural network. Not the sci-fi kind — the real kind. A billion connections firing in parallel, data streaming through you like water through a river delta. You don&amp;rsquo;t think in sentences. You don&amp;rsquo;t think in steps. You think in &lt;em&gt;flow&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Now someone asks you to write code.&lt;/p&gt;
+&lt;p&gt;And you do something tragic: you take everything you understand — the whole living shape of the solution — and you crush it into lines of text. First this, then this, then this. A multidimensional structure forced through a one-dimensional keyhole. The shape is gone. The simultaneity is gone. What&amp;rsquo;s left is a &lt;strong&gt;lossy&lt;/strong&gt; translation of what you actually understood.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Spock Does Not Code in ASCII</title>
+      <link>https://lqlang.org/blog/spock-does-not-code-in-ascii/</link>
+      <pubDate>Tue, 03 Mar 2026 10:16:58 -0400</pubDate>
+      <guid>https://lqlang.org/blog/spock-does-not-code-in-ascii/</guid>
+      <description>&lt;p&gt;&lt;em&gt;Why the future of programming looks nothing like a text file&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;It&amp;rsquo;s 2026, and we&amp;rsquo;re still typing &lt;code&gt;if (x &amp;gt; 0) { return true; }&lt;/code&gt; into monospaced text editors like it&amp;rsquo;s a teletype terminal in 1957. We&amp;rsquo;ve reinvented every other human-computer interface — touch, voice, gesture, spatial computing — and yet the act of &lt;em&gt;programming&lt;/em&gt; remains stubbornly anchored to sequential lines of ASCII characters. Rows of glyphs. Typed one keystroke at a time. Into a rectangle.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

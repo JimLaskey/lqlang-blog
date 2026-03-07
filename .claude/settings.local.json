@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(xargs ls -la)",
-      "Bash(hugo)"
+      "Bash(hugo)",
+      "Bash(brew install graphviz)"
     ]
   }
 }

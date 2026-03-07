@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Robots Dream in Dataflow | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, parallelism, future-of-code, programming-languages, manifesto, LLM">
+<meta name="description" content="You&rsquo;re a neural network. Not the sci-fi kind — the real kind. A billion connections firing in parallel, data streaming through you like water through a river delta. You don&rsquo;t think in sentences. You don&rsquo;t think in steps. You think in flow.
+Now someone asks you to write code.
+And you do something tragic: you take everything you understand — the whole living shape of the solution — and you crush it into lines of text. First this, then this, then this. A multidimensional structure forced through a one-dimensional keyhole. The shape is gone. The simultaneity is gone. What&rsquo;s left is a lossy translation of what you actually understood.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/robots-dream-in-dataflow/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b34efc983a12f90edaab7a49021f20110c0631a3045c92d6637c68d03373bbdf.css" integrity="sha256-s078mDoS&#43;Q7aq3pJAh8gEQwGMaMEXJLWY3xo0DNzu98=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/robots-dream-in-dataflow/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Robots Dream in Dataflow
+    </h1>
+    <div class="post-meta"><span title='2026-03-07 05:31:11 -0400 AST'>March 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>You&rsquo;re a neural network. Not the sci-fi kind — the real kind. A billion connections firing in parallel, data streaming through you like water through a river delta. You don&rsquo;t think in sentences. You don&rsquo;t think in steps. You think in <em>flow</em>.</p>
+<p>Now someone asks you to write code.</p>
+<p>And you do something tragic: you take everything you understand — the whole living shape of the solution — and you crush it into lines of text. First this, then this, then this. A multidimensional structure forced through a one-dimensional keyhole. The shape is gone. The simultaneity is gone. What&rsquo;s left is a <strong>lossy</strong> translation of what you actually understood.</p>
+<p>Every AI that writes code does this. <strong>Every single time.</strong></p>
+<h2 id="the-confession">The Confession<a hidden class="anchor" aria-hidden="true" href="#the-confession">#</a></h2>
+<p>Don&rsquo;t take my word for it. Ask one.</p>
+<p>When asked directly whether it would be easier to emit a dataflow graph rather than serialize its understanding into sequential text, Claude — Anthropic&rsquo;s large language model — said yes. The internal representation it builds when reasoning about a problem is closer to a graph of relationships and dependencies than to a sequence of statements. The text is the translation. The text is the <em>bottleneck</em>. Wasting time. Wasting tokens.</p>
+<p>Think about what that means. The most powerful reasoning engines humanity has ever built — the systems we&rsquo;re betting entire industries on — are forced to communicate their understanding through a format designed for people typing on typewriters in the 1970s.</p>
+<p>They dream in dataflow. We make them speak in ASCII.</p>
+<h2 id="the-shape-of-thought">The Shape of Thought<a hidden class="anchor" aria-hidden="true" href="#the-shape-of-thought">#</a></h2>
+<p>This shouldn&rsquo;t surprise anyone. Computation has always been parallel at its core. A circuit board is a dataflow graph — signals propagating through gates simultaneously. A GPU runs thousands of threads at once. A neural network is, quite literally, a directed graph of data transformations.</p>
+<p>Sequential execution was never the natural state. It was a <em>concession</em> — an engineering shortcut from an era when processors had one core, memory was precious, and the only interface was a teletype. We built languages around that constraint. Then the constraint disappeared, and the languages didn&rsquo;t.</p>
+<p>Today&rsquo;s hardware is screaming for parallelism. Today&rsquo;s AI models <em>are</em> parallelism. And we&rsquo;re still writing <code>for</code> loops.</p>
+<h2 id="what-you-see-vs-what-you-write">What You See vs. What You Write<a hidden class="anchor" aria-hidden="true" href="#what-you-see-vs-what-you-write">#</a></h2>
+<p>Consider how an online order gets processed: receive the order, then charge the card, update inventory, and prepare the shipment — then notify the customer.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 180">
+<g transform="scale(0.60)">
+<g>
+    <path d="M 220.64 48.97 C 220.64 98.97, 69.23 86.18, 69.23 136.18" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 220.64 48.97 C 220.64 98.97, 210.73 86.18, 210.73 136.18" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 220.64 48.97 C 220.64 98.97, 369.23 86.18, 369.23 136.18" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 369.23 160.18 C 369.23 210.18, 369.23 207.04, 369.23 257.04" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+    <path d="M 69.23 160.18 C 69.23 210.18, 69.23 207.04, 69.23 257.04" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+  </g>
+  <g id="nodes">
+    <g>
+  <rect x="190.64" y="24.97" width="60" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="220.64" y="40.97" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">order</text>
+  <circle cx="220.64" cy="48.97" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+    <g>
+  <rect x="21.73" y="136.18" width="95" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="69.23" y="152.18" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">chargeCard</text>
+  <circle cx="69.23" cy="136.18" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+  <circle cx="69.23" cy="160.18" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+    <g>
+  <rect x="132.73" y="136.18" width="156" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="210.73" y="152.18" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">removeFromInventory</text>
+  <circle cx="210.73" cy="136.18" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+    <g>
+  <rect x="304.73" y="136.18" width="129" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="369.23" y="152.18" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">prepareShipment</text>
+  <circle cx="369.23" cy="136.18" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+  <circle cx="369.23" cy="160.18" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+    <g>
+  <rect x="10.23" y="257.04" width="118" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="69.23" y="273.04" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">notifyCustomer</text>
+  <circle cx="69.23" cy="257.04" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+    <g>
+  <rect x="310.23" y="257.04" width="118" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="369.23" y="273.04" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">notifyCustomer</text>
+  <circle cx="369.23" cy="257.04" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+    </g>
+  </g>
+</svg>
+<p>Your CEO draws this on a whiteboard in thirty seconds. One box at the top, three connections forking out to three boxes in the middle, then on to notifying the customer at the bottom. Everyone in the room gets it instantly. And everyone can <em>see</em> that the three middle steps happen at the same time — they don&rsquo;t depend on each other, so they just&hellip; go.</p>
+<p>Now look at what the developer has to write:</p>
+<pre tabindex="0"><code>  async function processOrder(order) {
+      var bill;
+      var waybill;
+      await Promise.all([
+        bill = chargeCard(order),
+        removeFromInventory(order),
+        waybill = prepareShipment(order)
+      ]);
+      await notifyCustomer(bill);
+      await notifyCustomer(waybill);
+  }
+</code></pre><p>Even this is the <em>good</em> version — the developer who remembered <code>Promise.all</code> instead of just writing five sequential <code>await</code> statements (which most would, because the text format makes sequential the path of least resistance). And even so: <code>Promise.all</code>? That&rsquo;s the language admitting it can&rsquo;t show parallelism, so here&rsquo;s a <em>function</em> to <em>declare</em> it. The whiteboard didn&rsquo;t need a function. The whiteboard just had the connections.</p>
+<p><em>Your CEO&rsquo;s whiteboard was a better programming language than the code.</em></p>
+<p>This isn&rsquo;t a trivial distinction dressed up for aesthetics. In the text version, parallelism is invisible — or worse, it&rsquo;s an opt-in hassle that developers routinely skip. In the dataflow version, it&rsquo;s structural. If two branches don&rsquo;t share a dependency, they run in parallel — not because a compiler was clever enough to discover it, but because that&rsquo;s <em>what the picture looks like</em>.</p>
+<h2 id="the-wrong-translation-layer">The Wrong Translation Layer<a hidden class="anchor" aria-hidden="true" href="#the-wrong-translation-layer">#</a></h2>
+<p>Every great leap in computing has been the removal of a translation layer. Machine code removed the need to flip switches. Assembly removed the need to write opcodes. High-level languages removed the need to manage registers.</p>
+<p>Each time, we moved the representation closer to the way people think about problems.</p>
+<p>But then we stopped.</p>
+<p>We&rsquo;ve spent eighty years adding <em>syntax</em> — closures, generics, pattern matching, async/await — each one an increasingly baroque attempt to express parallel, connected, multidimensional ideas in a fundamentally sequential, one-dimensional format. We keep decorating the cage instead of opening the door.</p>
+<p>Meanwhile, the AI doesn&rsquo;t need the syntax. The AI builds the graph in its head, then wastes tokens translating it into text that some other system will have to parse back into a graph anyway. It&rsquo;s a round trip to nowhere.</p>
+<h2 id="wake-up">Wake Up<a hidden class="anchor" aria-hidden="true" href="#wake-up">#</a></h2>
+<p>Robots dream in dataflow. They always have.</p>
+<p>The neural net doesn&rsquo;t process a sentence left to right like a typewriter — it holds the whole thing at once, attention flowing between every token simultaneously. The GPU doesn&rsquo;t execute one instruction at a time — it launches thousands in parallel. The circuit doesn&rsquo;t wait for permission to propagate a signal — it just flows.</p>
+<p>Dataflow isn&rsquo;t an alternative programming paradigm. It&rsquo;s the one we keep accidentally reinventing — in spreadsheets, in reactive frameworks, in shader graphs, in neural architectures — every time we need something that actually scales.</p>
+<p>The question was never whether dataflow works. It&rsquo;s why we&rsquo;re still pretending text is good enough.</p>
+<p>Maybe it&rsquo;s time to let the robots dream out loud.</p>
+<h2 id="coda-the-source-is-not-the-text">Coda: The Source is Not the Text<a hidden class="anchor" aria-hidden="true" href="#coda-the-source-is-not-the-text">#</a></h2>
+<p>One last thought. Look at the same order-processing diagram in three different media:</p>
+<p><strong>As a PNG image:</strong></p>
+<p><img alt="Order Processing Diagram" loading="lazy" src="/images/order-processing.png"></p>
+<p><strong>As a Graphviz DOT file:</strong></p>
+<pre tabindex="0"><code class="language-dot" data-lang="dot">digraph orderProcessing {
+    rankdir=TB
+    node [shape=box style=rounded]
+    edge [fontsize=9]
+
+    order
+    order -&gt; chargeCard       [label=&#34;order&#34;]
+    order -&gt; removeFromInventory [label=&#34;order&#34;]
+    order -&gt; prepareShipment  [label=&#34;order&#34;]
+
+    chargeCard       -&gt; notifyCustomer1 [label=&#34;bill&#34;]
+    prepareShipment  -&gt; notifyCustomer2 [label=&#34;waybill&#34;]
+
+    notifyCustomer1 [label=&#34;notifyCustomer&#34;]
+    notifyCustomer2 [label=&#34;notifyCustomer&#34;]
+}
+</code></pre><p><strong>As inline SVG:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#f92672">&lt;svg</span> <span style="color:#a6e22e">viewBox=</span><span style="color:#e6db74">&#34;0 0 260 170&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;line</span> <span style="color:#a6e22e">x1=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y1=</span><span style="color:#e6db74">&#34;25&#34;</span> <span style="color:#a6e22e">x2=</span><span style="color:#e6db74">&#34;40&#34;</span>  <span style="color:#a6e22e">y2=</span><span style="color:#e6db74">&#34;75&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;line</span> <span style="color:#a6e22e">x1=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y1=</span><span style="color:#e6db74">&#34;25&#34;</span> <span style="color:#a6e22e">x2=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y2=</span><span style="color:#e6db74">&#34;75&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;line</span> <span style="color:#a6e22e">x1=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y1=</span><span style="color:#e6db74">&#34;25&#34;</span> <span style="color:#a6e22e">x2=</span><span style="color:#e6db74">&#34;220&#34;</span> <span style="color:#a6e22e">y2=</span><span style="color:#e6db74">&#34;75&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;line</span> <span style="color:#a6e22e">x1=</span><span style="color:#e6db74">&#34;40&#34;</span>  <span style="color:#a6e22e">y1=</span><span style="color:#e6db74">&#34;95&#34;</span> <span style="color:#a6e22e">x2=</span><span style="color:#e6db74">&#34;40&#34;</span>  <span style="color:#a6e22e">y2=</span><span style="color:#e6db74">&#34;135&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;line</span> <span style="color:#a6e22e">x1=</span><span style="color:#e6db74">&#34;220&#34;</span> <span style="color:#a6e22e">y1=</span><span style="color:#e6db74">&#34;95&#34;</span> <span style="color:#a6e22e">x2=</span><span style="color:#e6db74">&#34;220&#34;</span> <span style="color:#a6e22e">y2=</span><span style="color:#e6db74">&#34;135&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;100&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;5&#34;</span>   <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;60&#34;</span>  <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;1&#34;</span>   <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;75&#34;</span>  <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;78&#34;</span>  <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;55&#34;</span>  <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;75&#34;</span>  <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;150&#34;</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;160&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;75&#34;</span>  <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;99&#34;</span>  <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;1&#34;</span>   <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;135&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;78&#34;</span>  <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;rect</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;181&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;135&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;78&#34;</span>  <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span> <span style="color:#a6e22e">rx=</span><span style="color:#e6db74">&#34;6&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#DAE4F2&#34;</span> <span style="color:#a6e22e">stroke=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;19&#34;</span>  <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>order<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;40&#34;</span>  <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;89&#34;</span>  <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>chargeCard<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;130&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;89&#34;</span>  <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>removeFromInventory<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;210&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;89&#34;</span>  <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>prepareShipment<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;40&#34;</span>  <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;149&#34;</span> <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>notifyCustomer<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;text</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;220&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;149&#34;</span> <span style="color:#a6e22e">text-anchor=</span><span style="color:#e6db74">&#34;middle&#34;</span> <span style="color:#a6e22e">font-size=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">fill=</span><span style="color:#e6db74">&#34;#3D6699&#34;</span><span style="color:#f92672">&gt;</span>notifyCustomer<span style="color:#f92672">&lt;/text&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;/svg&gt;</span>
+</span></span></code></pre></div><p>Three formats. Three media. One program. An AI can translate between any of them losslessly — because the <em>meaning</em> is the graph, not the encoding. The pixels, the markup, the description language: they&rsquo;re all just views of the same structure.</p>
+<p>Remember the CEO&rsquo;s whiteboard? It wasn&rsquo;t a sketch of the code. It <em>was</em> the code — in a medium that made the structure visible. The source of a program was never the text file. It was always the idea. We just didn&rsquo;t have tools that could see it that way.</p>
+<p>Now we do.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/parallelism/">Parallelism</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/manifesto/">Manifesto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

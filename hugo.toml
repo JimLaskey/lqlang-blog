@@ -2,5 +2,9 @@ baseURL = 'https://lqlang.org'
 languageCode = 'en-us'
 title = 'LQ Programming Language'
 theme = 'PaperMod'
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 [params]
 author = 'Jim Laskey'

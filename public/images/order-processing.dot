@@ -1,0 +1,21 @@
+digraph orderProcessing {
+    rankdir=TB
+    node [shape=box style=rounded fontname="system-ui, sans-serif"
+          fillcolor="#DAE4F2" color="#3D6699" fontcolor="#3D6699"]
+    edge [color="#3D6699" fontname="system-ui, sans-serif"
+          fontcolor="#3D6699" fontsize=9]
+
+    order
+    order -> chargeCard       [label="order"]
+    order -> removeFromInventory [label="order"]
+    order -> prepareShipment  [label="order"]
+
+    chargeCard       -> notifyCustomer1 [label="bill"]
+    prepareShipment  -> notifyCustomer2 [label="waybill"]
+
+    notifyCustomer1 [label="notifyCustomer"]
+    notifyCustomer2 [label="notifyCustomer"]
+
+    {rank=same; chargeCard; removeFromInventory; prepareShipment}
+    {rank=same; notifyCustomer1; notifyCustomer2}
+}

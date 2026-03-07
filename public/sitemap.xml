@@ -2,11 +2,53 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://lqlang.org/tags/ai/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
     <loc>https://lqlang.org/blog/</loc>
-    <lastmod>2026-03-03T10:16:58-04:00</lastmod>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/claude/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/coding/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/dataflow/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/future-of-code/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/languages/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/llm/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
   </url><url>
     <loc>https://lqlang.org/</loc>
-    <lastmod>2026-03-03T10:16:58-04:00</lastmod>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/manifesto/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/parallelism/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/programming/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/programming-languages/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/blog/robots-dream-in-dataflow/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
+  </url><url>
+    <loc>https://lqlang.org/tags/visual-programming/</loc>
+    <lastmod>2026-03-07T05:31:11-04:00</lastmod>
   </url><url>
     <loc>https://lqlang.org/blog/spock-does-not-code-in-ascii/</loc>
     <lastmod>2026-03-03T10:16:58-04:00</lastmod>
@@ -16,7 +58,5 @@
     <loc>https://lqlang.org/authors/</loc>
   </url><url>
     <loc>https://lqlang.org/categories/</loc>
-  </url><url>
-    <loc>https://lqlang.org/tags/</loc>
   </url>
 </urlset>
