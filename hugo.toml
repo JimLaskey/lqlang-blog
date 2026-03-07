@@ -6,5 +6,14 @@ theme = 'PaperMod'
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+[menu]
+  [[menu.main]]
+    name = "Blog"
+    url = "/blog/"
+    weight = 10
+  [[menu.main]]
+    name = "Examples"
+    url = "/examples/"
+    weight = 20
 [params]
 author = 'Jim Laskey'

@@ -50,6 +50,31 @@
     box-shadow: 0 1px 0;
 }
 
+.examples-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--content-gap) 0;
+}
+
+.examples-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.examples-list li:last-child {
+    border-bottom: none;
+}
+
+.examples-list a {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.examples-description {
+    color: var(--secondary);
+    font-size: 14px;
+}
+
 body:not(.list) .main {
     max-width: calc(var(--main-width) + 250px + var(--gap) * 3);
 }

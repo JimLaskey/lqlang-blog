@@ -1,0 +1,32 @@
+{{- define "main" }}
+
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- end }}
+</header>
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+<ul class="examples-list">
+  {{- range .RegularPages }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+    {{- with .Description }}
+    <span class="examples-description"> — {{ . }}</span>
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+
+{{- end }}

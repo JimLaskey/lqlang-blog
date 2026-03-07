@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Hello World | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, parallelism, future-of-code, programming-languages, manifesto, LLM">
+<meta name="description" content="The first node is a multiline text node, no quotes required. The second node is a call to the &ldquo;println&rdquo; method.
+
+
+    
+  
+  Hello World!
+  Hello World!
+  Hello World!
+  
+  
+  println
+  
+
+
+Hello World!
+Hello World!
+Hello World!
+">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/examples/hello-world-copy/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/examples/hello-world-copy/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Hello World
+    </h1>
+    <div class="post-meta"><span title='2026-03-07 12:35:51 -0400 AST'>March 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>The first node is a multiline text node, no quotes required. The second node is a call to the &ldquo;println&rdquo; method.</p>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 131.97 50">
+<g transform="scale(0.25)">
+    <path d="M 61.98 72 C 61.98 122, 61.98 66, 61.98 116" fill="none" stroke="#3D6699" stroke-width="1" stroke-linecap="round"/>
+  <rect x="16" y="16" width="91.97" height="56" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+  <text x="61.98" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">Hello World!</text>
+  <text x="61.98" y="47" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">Hello World!</text>
+  <text x="61.98" y="61" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">Hello World!</text>
+  <circle cx="61.98" cy="72" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+  <rect x="31.98" y="116" width="60" height="24" rx="8" fill="#DAE4F2" stroke="#3D6699" stroke-width="1"/>
+  <text x="61.98" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="13" fill="#3D6699" text-anchor="middle">println</text>
+  <circle cx="61.98" cy="116" r="4" fill="#FFFFFF" stroke="#3D6699" stroke-width="1"/>
+</g>
+</svg>
+<pre tabindex="0"><code>Hello World!
+Hello World!
+Hello World!
+</code></pre>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/parallelism/">Parallelism</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/manifesto/">Manifesto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

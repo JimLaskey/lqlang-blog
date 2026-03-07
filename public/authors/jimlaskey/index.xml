@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>LQ Programming Language</title>
-    <link>https://lqlang.org/authors/jimlaskey/</link>
+    <link>http://localhost:1313/authors/jimlaskey/</link>
     <description>Recent content on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <atom:link href="https://lqlang.org/authors/jimlaskey/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/authors/jimlaskey/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
