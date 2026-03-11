@@ -6,55 +6,90 @@
     <description>Recent content in Tags on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Mar 2026 12:35:51 -0400</lastBuildDate>
+    <lastBuildDate>Wed, 11 Mar 2026 14:20:54 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ai</title>
       <link>http://localhost:1313/tags/ai/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/ai/</guid>
       <description></description>
     </item>
     <item>
       <title>Claude</title>
       <link>http://localhost:1313/tags/claude/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/claude/</guid>
       <description></description>
     </item>
     <item>
       <title>Coding</title>
       <link>http://localhost:1313/tags/coding/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/coding/</guid>
       <description></description>
     </item>
     <item>
       <title>Dataflow</title>
       <link>http://localhost:1313/tags/dataflow/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/dataflow/</guid>
       <description></description>
     </item>
     <item>
       <title>Future-of-Code</title>
       <link>http://localhost:1313/tags/future-of-code/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/future-of-code/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Howto</title>
+      <link>http://localhost:1313/tags/howto/</link>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
+      <guid>http://localhost:1313/tags/howto/</guid>
       <description></description>
     </item>
     <item>
       <title>Languages</title>
       <link>http://localhost:1313/tags/languages/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/languages/</guid>
       <description></description>
     </item>
     <item>
       <title>LLM</title>
       <link>http://localhost:1313/tags/llm/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
       <guid>http://localhost:1313/tags/llm/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Parallelism</title>
+      <link>http://localhost:1313/tags/parallelism/</link>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
+      <guid>http://localhost:1313/tags/parallelism/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Programming</title>
+      <link>http://localhost:1313/tags/programming/</link>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
+      <guid>http://localhost:1313/tags/programming/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Programming-Languages</title>
+      <link>http://localhost:1313/tags/programming-languages/</link>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
+      <guid>http://localhost:1313/tags/programming-languages/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Visual-Programming</title>
+      <link>http://localhost:1313/tags/visual-programming/</link>
+      <pubDate>Wed, 11 Mar 2026 14:20:54 -0300</pubDate>
+      <guid>http://localhost:1313/tags/visual-programming/</guid>
       <description></description>
     </item>
     <item>
@@ -62,34 +97,6 @@
       <link>http://localhost:1313/tags/manifesto/</link>
       <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
       <guid>http://localhost:1313/tags/manifesto/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Parallelism</title>
-      <link>http://localhost:1313/tags/parallelism/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
-      <guid>http://localhost:1313/tags/parallelism/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Programming</title>
-      <link>http://localhost:1313/tags/programming/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
-      <guid>http://localhost:1313/tags/programming/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Programming-Languages</title>
-      <link>http://localhost:1313/tags/programming-languages/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
-      <guid>http://localhost:1313/tags/programming-languages/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Visual-Programming</title>
-      <link>http://localhost:1313/tags/visual-programming/</link>
-      <pubDate>Sat, 07 Mar 2026 12:35:51 -0400</pubDate>
-      <guid>http://localhost:1313/tags/visual-programming/</guid>
       <description></description>
     </item>
   </channel>
