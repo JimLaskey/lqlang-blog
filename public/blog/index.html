@@ -128,8 +128,9 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p> title: “The LQ Toolchain” date: 2026-03-16 draft: false tags: [LQ, toolchain, compiler, LLVM, architecture] Let the Robots Speak introduced LQ — a visual dataflow language designed for AI agents. This post looks under the hood at how LQ programs go from graph to running code.
+    <p>Let the Robots Speak introduced LQ — a visual dataflow language designed for AI agents. This post looks under the hood at how LQ programs go from graph to running code.
 Architecture The LQ toolchain is built around a single persistent process: the lqc server. Both the native macOS IDE and (eventually) a browser-based client communicate with lqc through a message-based protocol. One server, multiple clients, same capabilities.
+IDE Native MacOS AI Agent MCP Browser (pending) lqc server Language Service Autocomplete Verify Compiler Compile, Build, Bundle Runtime Run Debug LLVM Native Code Generation LLDB Debug Engine The lqc server handles three categories of work: language services, compilation, and runtime.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2026-03-16 10:03:50 -0300 ADT'>March 16, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
