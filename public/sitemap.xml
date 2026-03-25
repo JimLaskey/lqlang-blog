@@ -2,55 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/ai/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/blog/</loc>
-    <lastmod>2026-03-16T10:03:50-03:00</lastmod>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/claude/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/coding/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/dataflow/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/future-of-code/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/howto/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/languages/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/llm/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2026-03-16T10:03:50-03:00</lastmod>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/parallelism/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/programming/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/programming-languages/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blog/thinking-in-nodes/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/visual-programming/</loc>
+    <lastmod>2026-03-24T11:56:25-03:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/blog/the-lq-tool-chain/</loc>
     <lastmod>2026-03-16T10:03:50-03:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/tags/ai/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/claude/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/coding/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/dataflow/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/future-of-code/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/howto/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/languages/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
     <loc>http://localhost:1313/blog/let-the-robots-speak/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/llm/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/parallelism/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/programming/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/programming-languages/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-    <lastmod>2026-03-11T14:20:54-03:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/visual-programming/</loc>
     <lastmod>2026-03-11T14:20:54-03:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/blog/coders-dream-in-dataflow-too/</loc>

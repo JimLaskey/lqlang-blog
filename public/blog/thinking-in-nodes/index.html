@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Thinking in Nodes | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, parallelism, future-of-code, programming-languages, howto, LLM">
+<meta name="description" content="Previous posts introduced the idea behind LQ — a diagrammatic dataflow language where the program is the graph. This post gets hands-on. Starting with a small, complete example and then breaking it apart to explain the building blocks: nodes, terminals, connections, and data flow.
+The Example
+What the example does: take a JSON string containing a list of people, parse it, iterate through the list, and extract each person&rsquo;s name and age.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/thinking-in-nodes/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/thinking-in-nodes/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Thinking in Nodes
+    </h1>
+    <div class="post-meta"><span title='2026-03-24 11:56:25 -0300 ADT'>March 24, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Previous posts introduced the idea behind LQ — a diagrammatic dataflow language where the program <em>is</em> the graph. This post gets hands-on. Starting with a small, complete example and then breaking it apart to explain the building blocks: nodes, terminals, connections, and data flow.</p>
+<h2 id="the-example">The Example<a hidden class="anchor" aria-hidden="true" href="#the-example">#</a></h2>
+<p>What the example does: take a JSON string containing a list of people, parse it, iterate through the list, and extract each person&rsquo;s name and age.</p>
+<p>In a text language, this might be a few lines of parsing and a for loop. In LQ, the entire program is a graph — and here it is:</p>
+<figure style="text-align: center;">
+    <img alt="main method" width="40%" src="/blog/images/tutorial1.1.png">
+    <figcaption><code>main</code> method</figcaption>
+</figure>
+<figure style="text-align: center;">
+    <img alt="printPerson method" width="50%" src="/blog/images/tutorial1.6.png">
+    <figcaption><code>printPerson</code> method</figcaption>
+</figure>
+<p>That&rsquo;s the whole program. Now let&rsquo;s look at each piece.</p>
+<h2 id="text-literals">Text Literals<a hidden class="anchor" aria-hidden="true" href="#text-literals">#</a></h2>
+<p>Data often enters an LQ graph through literal nodes. A text literal is the simplest kind — a node that holds a raw string value and provides it as output through a terminal at the bottom.</p>
+<figure style="text-align: center;">
+    <img alt="text node with output terminal highlighted" width="40%" src="/blog/images/tutorial1.2.png">
+    <figcaption>text node with output terminal highlighted</figcaption>
+</figure>
+<p>The JSON string sits directly in the node. No variable declaration, no assignment statement, no <code>const json = '...'</code>. The data simply exists in the graph and flows outward through the terminal.</p>
+<h2 id="nodes-and-terminals">Nodes and Terminals<a hidden class="anchor" aria-hidden="true" href="#nodes-and-terminals">#</a></h2>
+<p>Every operation in LQ is a <strong>node</strong> — typically a rounded rectangle with a label describing what it does. Nodes receive data through <strong>input terminals</strong> on the top (or left) edge and emit results through <strong>output terminals</strong> on the bottom (or right) edge.</p>
+<figure style="text-align: center;">
+    <img alt="readJSON invocation with one input and one output" width="25%" src="/blog/images/tutorial1.3.png">
+    <figcaption><code>readJSON</code> invocation with one input and one output</figcaption>
+</figure>
+<p><code>readJSON</code> (a library method) has one input terminal (a <code>String</code>) and one output terminal (an <code>Any</code> — because JSON can contain arrays, maps, numbers, strings, or booleans). The node transforms the raw JSON text into LQ&rsquo;s native data structures: Arrays and Maps.</p>
+<h2 id="connections">Connections<a hidden class="anchor" aria-hidden="true" href="#connections">#</a></h2>
+<p>A <strong>connection</strong> is a wire between an output terminal and an input terminal. Data flows along the connection — from the text literal&rsquo;s output, into <code>readJSON</code>&rsquo;s input.</p>
+<figure style="text-align: center;">
+    <img alt="output of text node connected to input of readJSON node" width="40%" src="/blog/images/tutorial1.4.png">
+    <figcaption>output of text node connected to input of <code>readJSON</code> node</figcaption>
+</figure>
+<p>Connections are typed. The text literal emits a <code>String</code>. <code>readJSON</code> accepts a <code>String</code>. The types match, so the connection is valid. If someone tried to connect a number output to <code>readJSON</code>&rsquo;s <code>String</code> input, the compiler via the IDE would highlight the connection immediately while editing — not as a runtime error, but as a structural error visible in the graph.</p>
+<p>This is one of the advantages of a visual dataflow language. Type errors aren&rsquo;t buried in an error message referencing a line number. Type errors are flagged wire between two incompatible terminals — visible, obvious, and fixable by inspection.</p>
+<h2 id="iterating-the-array">Iterating the Array<a hidden class="anchor" aria-hidden="true" href="#iterating-the-array">#</a></h2>
+<p>The JSON parses the text into an Array of Maps. To process each person, the graph uses a <strong>forEach</strong> node.</p>
+<figure style="text-align: center;">
+    <img alt="the input to printPerson is annotated as forEach" width="40%" src="/blog/images/tutorial1.5.png">
+    <figcaption>the input to <code>printPerson</code> is annotated as <code>forEach</code></figcaption>
+</figure>
+<p><code>forEach</code> receives the array and executes the node body once for each element. Inside the body, the current element — a single person Map — is available through a terminal. No index variable. No loop counter. No off-by-one errors. The iteration is structural: the node processes every element, and the body describes what happens to each one.</p>
+<p>In a text language, this is a <code>for</code> loop or a <code>.forEach()</code> call. In LQ, the iteration is part of the graph&rsquo;s topology. The body is a subgraph — a graph within a graph — that receives one element at a time.</p>
+<h2 id="extracting-data-from-a-map">Extracting Data from a Map<a hidden class="anchor" aria-hidden="true" href="#extracting-data-from-a-map">#</a></h2>
+<p>Each person is a Map — a set of key-value pairs. To pull out the name and age, the graph uses <strong>get</strong> nodes.</p>
+<figure style="text-align: center;">
+    <img alt="printPerson method" width="50%" src="/blog/images/tutorial1.6.png">
+    <figcaption><strong>printPerson</strong> method</figcaption>
+</figure>
+<p>The input value for the <code>printPerson</code> method arrives via the triangular input parameter node at the top. <code>get</code> nodes take the Map as an input and uses the name of the node as the key. The output is the value associated with that key.</p>
+<p>Notice that the two <code>get</code> nodes — one for &ldquo;name&rdquo; and one for &ldquo;age&rdquo; — sit side by side with no connection between them. Neither depends on the other. This means they execute in parallel. Not because of any special annotation or concurrency keyword, but because the graph <em>shows</em> that they&rsquo;re independent. Parallelism is the default. Sequential execution only happens when one node&rsquo;s output feeds into another node&rsquo;s input.</p>
+<p>This is the core insight of dataflow: <strong>data dependencies define execution order</strong>. If there&rsquo;s no dependency, there&rsquo;s no ordering. The graph says exactly what depends on what, and nothing more.</p>
+<p>Once the values are extracted they are fed to a special interpolation form of string literal to produce the result we want.</p>
+<h2 id="putting-it-together">Putting It Together<a hidden class="anchor" aria-hidden="true" href="#putting-it-together">#</a></h2>
+<p>Zooming back out, the complete program reads top to bottom:</p>
+<ol>
+<li><strong>Text literal</strong> — the raw JSON string</li>
+<li><strong>readJSON</strong> — parses the string into an Array of Maps</li>
+<li><strong>forEach</strong> — iterates the array, processing each Map</li>
+<li><strong>get &ldquo;name&rdquo;</strong> and <strong>get &ldquo;age&rdquo;</strong> — extract values from each Map (in parallel)</li>
+<li><strong>Interpolation string literal</strong> - format the result</li>
+<li><strong>println</strong> — outputs the result</li>
+</ol>
+<figure style="text-align: center;">
+    <img alt="main method" width="40%" src="/blog/images/tutorial1.1.png">
+    <figcaption><code>main</code> method</figcaption>
+</figure>
+<figure style="text-align: center;">
+    <img alt="printPerson method" width="50%" src="/blog/images/tutorial1.6.png">
+    <figcaption><code>printPerson</code> method</figcaption>
+</figure>
+<p>Result:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>The person Alice is 30 years old
+</span></span><span style="display:flex;"><span>The person Bob is 25 years old
+</span></span><span style="display:flex;"><span>The person Carol is 35 years old
+</span></span></code></pre></div><p>Just nodes. No variables. No assignment. No semicolons. The data flows from top to bottom, transforming at each node. The shape of the program <em>is</em> the logic.</p>
+<p>Compare this to the equivalent text code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">string</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;[{&#34;name&#34;:&#34;Alice&#34;,&#34;age&#34;:30},{&#34;name&#34;:&#34;Bob&#34;,&#34;age&#34;:25},{&#34;name&#34;:&#34;Carol&#34;,&#34;age&#34;:35}]&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">people</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">string</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">person</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">people</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#34;The person&#34;</span>, <span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">name</span>, <span style="color:#e6db74">&#34;is&#34;</span>, <span style="color:#a6e22e">person</span>.<span style="color:#a6e22e">age</span>, <span style="color:#e6db74">&#34;years old&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>The text version is five lines — compact enough. But the data flow is implicit. The reader has to know that <code>JSON.parse</code> returns an array, that <code>person</code> is a map-like object, that <code>.name</code> and <code>.age</code> are independent accesses. All of that knowledge lives in the reader&rsquo;s head, not in the code.</p>
+<p>In the LQ version, the data flow is explicit. The types are visible on the connections. The parallelism is visible in the topology. The iteration is visible in the structure. Nothing is implied — everything is shown.</p>
+<h2 id="next">Next<a hidden class="anchor" aria-hidden="true" href="#next">#</a></h2>
+<p>This tutorial covered the fundamentals: literal nodes, operation nodes, terminals, connections, type flow, iteration, map access and interpolation. Upcoming posts will explore abutting, closures, control flow, composition, and how all of this looks when an AI agent builds the graph instead of a human.</p>
+<p>The graph is the program. The shape is the logic. Start thinking in nodes.</p>
+<h2 id="afterword">Afterword<a hidden class="anchor" aria-hidden="true" href="#afterword">#</a></h2>
+<p>For those who think the graphs use too much space, there are lots of shortcuts. For example, the printPerson method could be simplified to the following.</p>
+<figure style="text-align: center;">
+    <img alt="literal abutting the println" width="60%" src="/blog/images/tutorial1.7.png">
+    <figcaption>literal abutting the println</figcaption>
+</figure>
+<p>Stay tuned.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/parallelism/">Parallelism</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
