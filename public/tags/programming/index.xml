@@ -6,8 +6,16 @@
     <description>Recent content in Programming on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Mar 2026 11:56:25 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2026 10:21:11 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Abutting and Closures</title>
+      <link>http://localhost:1313/blog/abutting-and-closures/</link>
+      <pubDate>Tue, 07 Apr 2026 10:21:11 -0300</pubDate>
+      <guid>http://localhost:1313/blog/abutting-and-closures/</guid>
+      <description>&lt;p&gt;The &lt;a href=&#34;http://localhost:1313/blog/thinking-in-nodes&#34;&gt;previous tutorial&lt;/a&gt; ended with a teaser — a compressed version of the &lt;code&gt;printPerson&lt;/code&gt; method where a string literal physically touched a &lt;code&gt;println&lt;/code&gt; node, merging into a single compact structure. That wasn&amp;rsquo;t just a layout trick. That was &lt;strong&gt;abutting&lt;/strong&gt; — one of the features that makes LQ a shade different from other visual languages.&lt;/p&gt;
+&lt;p&gt;This post explains abutting from the ground up, then introduces the deeper concept that makes it powerful: closures.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Thinking in Nodes</title>
       <link>http://localhost:1313/blog/thinking-in-nodes/</link>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Abutting and Closures | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, parallelism, future-of-code, programming-languages, howto, LLM">
+<meta name="description" content="The previous tutorial ended with a teaser — a compressed version of the printPerson method where a string literal physically touched a println node, merging into a single compact structure. That wasn&rsquo;t just a layout trick. That was abutting — one of the features that makes LQ a shade different from other visual languages.
+This post explains abutting from the ground up, then introduces the deeper concept that makes it powerful: closures.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/abutting-and-closures/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/abutting-and-closures/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Abutting and Closures
+    </h1>
+    <div class="post-meta"><span title='2026-04-07 10:21:11 -0300 ADT'>April 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>The <a href="/blog/thinking-in-nodes">previous tutorial</a> ended with a teaser — a compressed version of the <code>printPerson</code> method where a string literal physically touched a <code>println</code> node, merging into a single compact structure. That wasn&rsquo;t just a layout trick. That was <strong>abutting</strong> — one of the features that makes LQ a shade different from other visual languages.</p>
+<p>This post explains abutting from the ground up, then introduces the deeper concept that makes it powerful: closures.</p>
+<h2 id="abutting-the-simple-case">Abutting: The Simple Case<a hidden class="anchor" aria-hidden="true" href="#abutting-the-simple-case">#</a></h2>
+<p>In most visual languages, nodes are isolated boxes connected by wires. Every operation floats independently, and the only relationship between nodes is the explicit connection.</p>
+<p>In LQ, nodes can <strong>abut</strong> — placed adjacent to each other, sharing a boundary, merging their behavior. The simplest case: a literal abutting a <code>println</code>.</p>
+<figure style="text-align: center;">
+    <img alt="detached literal vs abutted literal with println" width="40%" src="/blog/images/tutorial2.1.png">
+    <figcaption>detached vs abutted — same semantics, different layout</figcaption>
+</figure>
+<p>In the detached form, the literal has an output terminal, a wire carries the value, and <code>println</code> has an input terminal. Three visual elements for one simple idea: print this string.</p>
+<p>In the abutted form, the literal sits directly against <code>println</code>. No wire. No terminals between them. The literal becomes <strong>the</strong> input argument. The spatial relationship <em>is</em> the connection.</p>
+<p>This is the form shown in the afterword of the previous post — a string literal abutting <code>println</code> to produce a single compact expression.</p>
+<h2 id="stacking">Stacking<a hidden class="anchor" aria-hidden="true" href="#stacking">#</a></h2>
+<p>Abutting gets more interesting when literals <strong>stack</strong>.</p>
+<p>Place two string literals on top of each other, abutting the same node, and something changes: the values form an <strong>array</strong>. Stacking is how LQ represents multiple values of the same type flowing into a single input.</p>
+<figure style="text-align: center;">
+    <img alt="three string literals stacked, abutting println, forming an array" width="25%" src="/blog/images/tutorial2.2.png">
+    <figcaption>stacked literals form an <code>Array&lt;String&gt;</code></figcaption>
+</figure>
+<p>No array syntax. No square brackets. No commas. The visual arrangement <em>is</em> the data structure. Three literals stacked produce an array of three elements.</p>
+<p>This is a small example of a larger principle: in LQ, structure can be expressed through spatial arrangement, not punctuation. The stacking pattern will reappear later in a more powerful form — stacked closures representing alternatives — but the mechanic is the same.</p>
+<h2 id="closures">Closures<a hidden class="anchor" aria-hidden="true" href="#closures">#</a></h2>
+<p>To go beyond literals, LQ needs a way to represent <em>behavior</em> — not a fixed value, but a computation that can be passed around and executed later. That&rsquo;s a <strong>closure</strong>.</p>
+<p>In text languages, a closure is a function that captures variables from its surrounding scope:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>greet <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> name: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Hello, </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span></code></pre></div><p>In LQ, a closure is a <strong>node that contains a subgraph</strong> — a small dataflow program inside a node. The closure has input terminals (its parameters), an internal graph (its logic), and output terminals (its results).</p>
+<figure style="text-align: center;">
+    <img alt="closure node with internal subgraph, connected by wire" width="35%" src="/blog/images/tutorial2.3.png">
+    <figcaption>a closure node — behavior packaged as data</figcaption>
+</figure>
+<p>The critical thing: a closure describes behavior <em>to be executed later</em>. The closure node itself doesn&rsquo;t run the subgraph. The closure packages the behavior and passes it along the wire as data — just like a literal passes a value.</p>
+<h3 id="capturing-values">Capturing Values<a hidden class="anchor" aria-hidden="true" href="#capturing-values">#</a></h3>
+<p>What makes a closure more than just a subgraph is <strong>capture</strong> — connections from the surrounding graph that feed into the closure&rsquo;s interior. A closure doesn&rsquo;t just receive its explicit parameters. A closure can also pull in values from the enclosing scope through connections that cross the closure boundary.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>threshold <span style="color:#f92672">=</span> <span style="color:#ae81ff">30</span>
+</span></span><span style="display:flex;"><span>is_senior <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> person: person[<span style="color:#e6db74">&#34;age&#34;</span>] <span style="color:#f92672">&gt;</span> threshold
+</span></span></code></pre></div><p>In that Python example, <code>threshold</code> is captured — it lives outside the lambda but is used inside it. In LQ, this is visible in the graph: a wire from a node outside the closure crosses into the closure&rsquo;s interior. The captured value is explicit, not implicit. There&rsquo;s no wondering which variables a closure &ldquo;closes over&rdquo; — the connections show it.</p>
+<figure style="text-align: center;">
+    <img alt="closure with parameter input and captured value from outside" width="50%" src="/blog/images/tutorial2.4.png">
+    <figcaption>parameter vs captured value — capture is visible in the graph</figcaption>
+</figure>
+<h3 id="closures-as-continuations">Closures as Continuations<a hidden class="anchor" aria-hidden="true" href="#closures-as-continuations">#</a></h3>
+<p>Closures that capture context and defer execution also open the door to <strong>continuations</strong> — the ability to suspend and resume computation at a specific point. This is a deeper topic that deserves its own post, but worth noting: the same closure mechanics that support sorting comparators and loop bodies are the foundation for more advanced control flow patterns like coroutines and structured concurrency. More on this in a future post.</p>
+<p>Closures in LQ are compile-time constructs. The compiler sees the closure, understands the captured context and the internal graph, and dissolves the entire structure into native control flow. No heap allocation. No runtime indirection. The visual representation is explicit, but the compiled output is as efficient as hand-written C.</p>
+<h2 id="invoke">Invoke<a hidden class="anchor" aria-hidden="true" href="#invoke">#</a></h2>
+<p>A closure sitting in the graph is inert — behavior waiting to happen. To actually execute it, LQ uses <strong>invoke</strong>.</p>
+<p><code>invoke</code> is a general-purpose node that takes a closure as input, executes the closure&rsquo;s subgraph, and produces the result. Think of it as the &ldquo;call&rdquo; operation for closures. The <code>invoke</code> inputs are the closure and an array of closure inputs. The <code>invoke</code> output is an array of the closure outputs.</p>
+<figure style="text-align: center;">
+    <img alt="closure connected by wire to invoke node" width="50%" src="/blog/images/tutorial2.5.png">
+    <figcaption><code>invoke</code> executes the closure's subgraph</figcaption>
+</figure>
+<p>In a text language, this is the difference between defining a function and calling it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>greet <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> name: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Hello, </span><span style="color:#e6db74">{</span>name<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>   <span style="color:#75715e"># define</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> greet(<span style="color:#e6db74">&#34;Alice&#34;</span>)                   <span style="color:#75715e"># invoke</span>
+</span></span></code></pre></div><p>In LQ, the closure node is the definition. The <code>invoke</code> node is the call. The wire between them carries behavior as data.</p>
+<p>This separation matters because closures can be passed <em>anywhere</em> before being invoked. A closure can travel through multiple nodes, be stored, be selected from alternatives, or be passed to a method that decides when and how to execute it.</p>
+<h2 id="abutting-with-closures-the-payoff">Abutting with Closures: The Payoff<a hidden class="anchor" aria-hidden="true" href="#abutting-with-closures-the-payoff">#</a></h2>
+<p>Now the two concepts come together.</p>
+<p>Consider sorting. Every developer has written a comparator — a small piece of behavior that takes two elements and decides which comes first:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>people<span style="color:#f92672">.</span>sort(key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> person: person[<span style="color:#e6db74">&#34;age&#34;</span>])
+</span></span></code></pre></div><p>That <code>lambda</code> is a closure passed to <code>sort</code>. In LQ, the comparator is a closure node containing the comparison logic. Connected by a wire, the closure floats separately from the <code>sort</code> node:</p>
+<figure style="text-align: center;">
+    <img alt="closure connected to sort node by wire — detached form" width="50%" src="/blog/images/tutorial2.6.png">
+    <figcaption>detached — closure linked to <code>sort</code> by wire</figcaption>
+</figure>
+<p>Functional, but the relationship between the comparator and the sort is only visible by tracing the wire. Now abut the closure to the sort node:</p>
+<figure style="text-align: center;">
+    <img alt="closure abutting sort node — shared boundary" width="35%" src="/blog/images/tutorial2.7.png">
+    <figcaption>abutted — "sort <em>using this</em>"</figcaption>
+</figure>
+<p>The abutted version reads like a sentence: &ldquo;sort <em>using this</em>.&rdquo; The comparator belongs to the sort — visually, spatially, semantically. No wire to trace. No reference to follow. The behavior is right there.</p>
+<h2 id="control-flow-from-closures">Control Flow from Closures<a hidden class="anchor" aria-hidden="true" href="#control-flow-from-closures">#</a></h2>
+<p>Here&rsquo;s where the design comes full circle: <strong>control flow in LQ is just methods that accept closures</strong>.</p>
+<p>The <code>forEach</code> from the <a href="/blog/thinking-in-nodes">previous tutorial</a> was already a closure in disguise. <code>forEach</code> is a regular method that takes an array and a closure. The closure is the loop body. There&rsquo;s no special &ldquo;loop node&rdquo; built into the language.</p>
+<p>The same applies to conditionals. An <code>if</code> is a node that takes a boolean and one or two closures — the &ldquo;then&rdquo; branch and the optional &ldquo;else&rdquo; branch. The closures abut the <code>if</code> node, making the branches visually adjacent to the condition.</p>
+<p>No special control flow syntax. Just nodes and closures. And remember the stacking pattern from earlier — stacked closures will become the visual equivalent of pattern matching. But that&rsquo;s a topic for a future post.</p>
+<h2 id="why-this-matters">Why This Matters<a hidden class="anchor" aria-hidden="true" href="#why-this-matters">#</a></h2>
+<p><strong>Readability.</strong> Abutting keeps related logic together. The comparator lives next to the sort. The loop body lives next to the iteration.</p>
+<p><strong>Composability.</strong> Because control flow is just method calls with closures, new control flow patterns are ordinary library methods. A <code>retry</code> that re-executes a closure on failure. A <code>timeout</code> that races a closure against a deadline. No language extension required.</p>
+<p><strong>Zero overhead.</strong> Closures dissolve at compile time. The visual structure is for the developer or agent. The compiled output is flat, efficient native code through LLVM.</p>
+<h2 id="next">Next<a hidden class="anchor" aria-hidden="true" href="#next">#</a></h2>
+<p>Upcoming posts will explore stacked closures as alternatives, terminal kinds, the type system, and how an AI agent constructs these structures programmatically. The building blocks are in place. The structures get more interesting from here.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/parallelism/">Parallelism</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
