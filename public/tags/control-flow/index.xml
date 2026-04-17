@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Control-Flow on LQ Programming Language</title>
+    <link>http://localhost:1313/tags/control-flow/</link>
+    <description>Recent content in Control-Flow on LQ Programming Language</description>
+    <generator>Hugo -- 0.157.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Apr 2026 10:00:00 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/control-flow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Control Flow from Closures</title>
+      <link>http://localhost:1313/blog/control-flow-from-closures/</link>
+      <pubDate>Tue, 14 Apr 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/control-flow-from-closures/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;http://localhost:1313/blog/abutting-and-closures&#34;&gt;The previous post&lt;/a&gt; ended with a claim: control flow in LQ is just methods that accept closures. No special syntax. No reserved keywords. Conditionals, loops, error handling — all built from the same pieces as any other operation.&lt;/p&gt;
+&lt;p&gt;This post makes good on that claim. Walking through four fundamental control structures — &lt;code&gt;if&lt;/code&gt;, &lt;code&gt;guard&lt;/code&gt;, &lt;code&gt;case&lt;/code&gt; and &lt;code&gt;try/catch&lt;/code&gt; — each one a regular method, each one a small recombination of closures and abutting.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

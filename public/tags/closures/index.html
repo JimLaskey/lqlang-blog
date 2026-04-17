@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head>
-	<meta name="generator" content="Hugo 0.157.0"><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>LQ Programming Language</title>
-
+<title>Closures | LQ Programming Language</title>
+<meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="Jim Laskey">
-<link rel="canonical" href="http://localhost:1313/">
+<link rel="canonical" href="http://localhost:1313/tags/closures/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -19,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/closures/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/closures/">
 <noscript>
     <style>
         #theme-toggle,
@@ -117,8 +116,13 @@
     </nav>
 </header>
 <main class="main"> 
+<header class="page-header">
+  <h1>
+    Closures
+  </h1>
+</header>
 
-<article class="first-entry"> 
+<article class="post-entry tag-entry"> 
   <header class="entry-header">
     <h2 class="entry-hint-parent">Control Flow from Closures
     </h2>
@@ -130,105 +134,6 @@ This post makes good on that claim. Walking through four fundamental control str
   </div>
   <footer class="entry-footer"><span title='2026-04-14 10:00:00 -0300 ADT'>April 14, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
   <a class="entry-link" aria-label="post link to Control Flow from Closures" href="http://localhost:1313/blog/control-flow-from-closures/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Abutting and Closures
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>The previous tutorial ended with a teaser — a compressed version of the printPerson method where a string literal physically touched a println node, merging into a single compact structure. That wasn’t just a layout trick. That was abutting — one of the features that makes LQ a shade different from other visual languages.
-This post explains abutting from the ground up, then introduces the deeper concept that makes it powerful: closures.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-04-07 10:21:11 -0300 ADT'>April 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Abutting and Closures" href="http://localhost:1313/blog/abutting-and-closures/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Thinking in Nodes
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Previous posts introduced the idea behind LQ — a diagrammatic dataflow language where the program is the graph. This post gets hands-on. Starting with a small, complete example and then breaking it apart to explain the building blocks: nodes, terminals, connections, and data flow.
-The Example What the example does: take a JSON string containing a list of people, parse it, iterate through the list, and extract each person’s name and age.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-24 11:56:25 -0300 ADT'>March 24, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Thinking in Nodes" href="http://localhost:1313/blog/thinking-in-nodes/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">The LQ Tool Chain
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Let the Robots Speak introduced LQ — a visual dataflow language designed for AI agents. This post looks under the hood at how LQ programs go from graph to running code.
-Architecture The LQ toolchain is built around a single persistent process: the lqc server. Both the native macOS IDE and (eventually) a browser-based client communicate with lqc through a message-based protocol. One server, multiple clients, same capabilities.
-IDE Native MacOS AI Agent MCP Browser (pending) lqc server Language Service Autocomplete Verify Compiler Compile, Build, Bundle Runtime Run Debug LLVM Native Code Generation LLDB Debug Engine The lqc server handles three categories of work: language services, compilation, and runtime.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-16 10:03:50 -0300 ADT'>March 16, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to The LQ Tool Chain" href="http://localhost:1313/blog/the-lq-tool-chain/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Let the Robots Speak
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Foreword I’ve been thinking about writing another diagrammatic language since my work on Prograph in the 1980s. Life happens — the time and resources to dive in never quite lined up. With the advent of AI, the possibility became a reality. Claude and I are best buds, and I’ve been able to do a brain dump of decades of ideas and actually watch them come together in a remarkably short period of time.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-11 14:20:54 -0300 ADT'>March 11, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Let the Robots Speak" href="http://localhost:1313/blog/let-the-robots-speak/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Coders Dream in Dataflow Too
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>It happened in the shower, or on a walk, or staring at a whiteboard with a dried-out marker in your hand. The solution arrived not as words, not as syntax, but as a shape — data flowing from here to there, branches splitting, paths converging, the whole thing hanging in your mind like a mobile. You can see it. You can trace any path through it.
-Then you open your editor and start dismantling it.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-10 06:52:25 -0300 ADT'>March 10, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Coders Dream in Dataflow Too" href="http://localhost:1313/blog/coders-dream-in-dataflow-too/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Robots Dream in Dataflow
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>You’re a neural network. Not the sci-fi kind — the real kind. A billion connections firing in parallel, data streaming through you like water through a river delta. You don’t think in sentences. You don’t think in steps. You think in flow.
-Now someone asks you to write code.
-And you do something tragic: you take everything you understand — the whole living shape of the solution — and you crush it into lines of text. First this, then this, then this. A multidimensional structure forced through a one-dimensional keyhole. The shape is gone. The simultaneity is gone. What’s left is a lossy translation of what you actually understood.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-07 05:31:11 -0400 AST'>March 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Robots Dream in Dataflow" href="http://localhost:1313/blog/robots-dream-in-dataflow/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Mr. Spock Does Not Code in ASCII
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Why the future of programming looks nothing like a text file
-It’s 2026, and we’re still typing if (x &gt; 0) { return true; } into monospaced text editors like it’s a teletype terminal in 1957. We’ve reinvented every other human-computer interface — touch, voice, gesture, spatial computing — and yet the act of programming remains stubbornly anchored to sequential lines of ASCII characters. Rows of glyphs. Typed one keystroke at a time. Into a rectangle.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-03 10:16:58 -0400 AST'>March 3, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Mr. Spock Does Not Code in ASCII" href="http://localhost:1313/blog/spock-does-not-code-in-ascii/"></a>
 </article>
     </main>
     

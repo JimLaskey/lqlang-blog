@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Control Flow from Closures | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, control-flow, closures, future-of-code, programming-languages, howto, LLM">
+<meta name="description" content="The previous post ended with a claim: control flow in LQ is just methods that accept closures. No special syntax. No reserved keywords. Conditionals, loops, error handling — all built from the same pieces as any other operation.
+This post makes good on that claim. Walking through four fundamental control structures — if, guard, case and try/catch — each one a regular method, each one a small recombination of closures and abutting.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/control-flow-from-closures/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/control-flow-from-closures/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Control Flow from Closures
+    </h1>
+    <div class="post-meta"><span title='2026-04-14 10:00:00 -0300 ADT'>April 14, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p><a href="/blog/abutting-and-closures">The previous post</a> ended with a claim: control flow in LQ is just methods that accept closures. No special syntax. No reserved keywords. Conditionals, loops, error handling — all built from the same pieces as any other operation.</p>
+<p>This post makes good on that claim. Walking through four fundamental control structures — <code>if</code>, <code>guard</code>, <code>case</code> and <code>try/catch</code> — each one a regular method, each one a small recombination of closures and abutting.</p>
+<h2 id="abutting-closures-to-a-node">Abutting closures to a node<a hidden class="anchor" aria-hidden="true" href="#abutting-closures-to-a-node">#</a></h2>
+<p>When a closure is abutted to a node, the closure becomes the last input argument of the node. This gives the node control over when — or whether — the closure is invoked. If a stack of closures are abutting the node then an array of closures is passed to the node. The node can select which and when the closures are actually invoked. This provides a powerful mechanism for controlling flow in LQ. Using this basic mechanism, developers can create their own control methods.</p>
+<h2 id="if--else">if / else<a hidden class="anchor" aria-hidden="true" href="#if--else">#</a></h2>
+<p>The simplest control structure. <code>if</code> is a method that takes a boolean as input and one or two abutted closures.</p>
+<figure style="text-align: center;">
+    <img alt="if method with one abutted closure (then branch only)" width="40%" src="/blog/images/tutorial3.1.png">
+    <figcaption><code>if</code> with a single closure — the then branch</figcaption>
+</figure>
+<p>When the boolean is <code>true</code>, the closure executes. When <code>false</code>, the closure is skipped. With one closure, that&rsquo;s the whole story.</p>
+<p>For an else branch, abut a second closure below the first. The first closure is the then-branch. The second is the else-branch.</p>
+<figure style="text-align: center;">
+    <img alt="if method with two stacked closures (then and else branches)" width="40%" src="/blog/images/tutorial3.2.png">
+    <figcaption><code>if</code> with two stacked closures — then and else</figcaption>
+</figure>
+<p>Notice what isn&rsquo;t here: no <code>else</code> keyword. No braces. No nested syntax. The two branches are just two closures stacked beneath the <code>if</code> node, each containing the subgraph for that path.</p>
+<p>In a text language:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">if</span> true:
+</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;Success&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>    println(<span style="color:#e6db74">&#34;Failure&#34;</span>);
+</span></span></code></pre></div><p>In LQ: an <code>if</code> node with the boolean input, the first closure containing <code>println(&quot;Success&quot;)</code>, the second closure containing <code>println(&quot;Failure&quot;)</code>. Same logic, slightly different representation.</p>
+<p>The compiler dissolves the closures at compile time. The result is native conditional branch instructions — the same machine code a C compiler would emit for the equivalent <code>if/else</code>. No closure objects. No indirection.</p>
+<h3 id="inputs-and-outputs">Inputs and Outputs<a hidden class="anchor" aria-hidden="true" href="#inputs-and-outputs">#</a></h3>
+<p>The closures inside an <code>if</code> abutment aren&rsquo;t isolated — their inputs and outputs <em>are</em> the inputs and outputs of the entire abutment. Data flows into the <code>if</code>, through whichever branch executes, and out the other side.</p>
+<figure style="text-align: center;">
+    <img alt="if abutment with closures outputting Success and Failure strings to println" width="40%" src="/blog/images/tutorial3.2a.png">
+    <figcaption>closure outputs become the abutment's output — fed to <code>println</code></figcaption>
+</figure>
+<p>In this example, the then-closure outputs the string &ldquo;Success&rdquo; and the else-closure outputs &ldquo;Failure&rdquo;. The selected string flows out of the <code>if</code> abutment as a whole, arriving at the <code>println</code> node below. The abutment behaves as a single node with one output — which branch produced the value is an internal detail.</p>
+<p>This is the dataflow equivalent of a ternary expression. The <code>if</code> abutment is an expression, not just a statement. Data goes in, data comes out.</p>
+<h3 id="iteration-over-an-abutment">Iteration over an Abutment<a hidden class="anchor" aria-hidden="true" href="#iteration-over-an-abutment">#</a></h3>
+<p>The <code>if</code> abutment is also treated as a single node when it comes to iteration terminals. Attach a <code>forEach</code> input terminal and the entire abutment — condition, closures, and all — executes once for each element.</p>
+<figure style="text-align: center;">
+    <img alt="array of booleans with forEach terminal iterating the entire if abutment" width="40%" src="/blog/images/tutorial3.2b.png">
+    <figcaption>an array of booleans iterated against the entire <code>if</code> abutment</figcaption>
+</figure>
+<p>Pass an array of booleans to the <code>if</code> abutment with a <code>forEach</code> input terminal, and the abutment runs once per boolean — selecting the then or else branch for each element. The abutment is a single composable unit. Iteration, branching, and output all work together because the abutment is just a node like any other.</p>
+<h2 id="guard">guard<a hidden class="anchor" aria-hidden="true" href="#guard">#</a></h2>
+<p>In LQ, <code>guard</code> is a method that takes an array guarded closures. If the guard(s) of the first closure fails then control passes on to the next closure and so on.</p>
+<figure style="text-align: center;">
+    <img alt="guard method with abutted closures" width="40%" src="/blog/images/tutorial3.3.png">
+    <figcaption><code>guard</code> — closure runs on success otherwise goes to the next</figcaption>
+</figure>
+<p>In the example, the input to the guard abutment is checked in each closure against a literal using is equal. Since the &ldquo;a&rdquo; test fails it goes to the next closure. This time the &ldquo;b&rdquo; test succeeds and the closure prints &ldquo;case 2&rdquo;. The last closure is typically the catchall if all guards fail.</p>
+<h2 id="case">case<a hidden class="anchor" aria-hidden="true" href="#case">#</a></h2>
+<p><code>case</code> is where stacked closures become true alternatives.</p>
+<p>The <code>case</code> node takes an integer input and an arbitrary number of stacked closures. The integer selects which closure runs — index 0 picks the first, index 1 picks the second, and so on. The last closure in the stack is the <strong>default</strong>, executed when the index doesn&rsquo;t match any earlier closure.</p>
+<figure style="text-align: center;">
+    <img alt="case method with multiple stacked closures, integer index input" width="40%" src="/blog/images/tutorial3.4.png">
+    <figcaption><code>case</code> — integer selects which stacked closure runs</figcaption>
+</figure>
+<p>In a text language, this is a <code>switch</code> statement:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">switch</span> (<span style="color:#a6e22e">index</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;case 0&#34;</span>); <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">case</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;case 1&#34;</span>); <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;case 2&#34;</span>); <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>In LQ, the three behaviors are three stacked closures abutting a <code>case</code> node. The <code>index</code> input flows into the index terminal. The compiler generates a jump table — the same optimization a C compiler applies to a dense <code>switch</code>.</p>
+<p>The stacking pattern from the previous post — where stacked literals form an array — extends naturally here. Stacked closures form alternatives. Same spatial mechanic. Same principle: structure expressed through arrangement, not punctuation.</p>
+<p>For sparse or non-integer dispatch (matching strings, types, or patterns), the language provides higher-level matching methods built on top of <code>case</code>. But the primitive is just an integer index into a stack of closures.</p>
+<h2 id="try--catch">try / catch<a hidden class="anchor" aria-hidden="true" href="#try--catch">#</a></h2>
+<p>Error handling follows the same pattern. <code>try/catch</code> is a single node with two stacked closures: the try block on top, the catch block below.</p>
+<figure style="text-align: center;">
+    <img alt="try/catch node with two stacked closures - try block and catch handler" width="65%" src="/blog/images/tutorial3.5.png">
+    <figcaption><code>try/catch</code> — protected block on top, handler below</figcaption>
+</figure>
+<p>Execution enters the try closure. If the subgraph completes normally, the result flows out of the <code>try/catch</code> node and execution continues. If an error is thrown anywhere inside the try closure, execution jumps to the catch closure, which receives the error as input.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> risky_operation()
+</span></span><span style="display:flex;"><span>    process(result)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span>    log_error(e)
+</span></span></code></pre></div><p>In LQ, the <code>try/catch</code> node has the protected operations in its first closure and the error handler in its second. The error type appears as an input terminal on the catch closure. The graph makes the recovery path immediately visible — no scrolling to find a distant <code>except</code> block, no wondering which <code>try</code> a particular <code>catch</code> belongs to. The pairing is spatial.</p>
+<p>For methods that can throw, the type system tracks which errors propagate. A <code>try/catch</code> that doesn&rsquo;t handle a thrown error type is flagged at compile time — the structural error appears in the IDE while editing, not at runtime.</p>
+<h2 id="the-pattern-repeats">The Pattern Repeats<a hidden class="anchor" aria-hidden="true" href="#the-pattern-repeats">#</a></h2>
+<p>Four control structures. One mechanism.</p>
+<p>Every one of them is a method that accepts closures. <code>if</code> and <code>guard</code> use abutting to attach branches. <code>case</code> and <code>try/catch</code> use stacking to express alternatives. The visual operators are abutment and stacking. The semantic primitive is the closure.</p>
+<p>This is what &ldquo;closures all the way down&rdquo; means in practice. New control flow patterns don&rsquo;t require language extensions — they require library methods that accept closures. A <code>retry</code> that re-executes a closure on failure. A <code>timeout</code> that races a closure against a deadline. A <code>transaction</code> that commits or rolls back. A <code>parallel</code> that runs stacked closures concurrently. None of these need new syntax. All of them follow the same pattern as the four built-in structures.</p>
+<p>The compiler erases the visual structure. Closures dissolve into native control flow. The runtime cost is the same as hand-written C or Rust. The graph is the design tool. The compiled output is the execution.</p>
+<h2 id="next">Next<a hidden class="anchor" aria-hidden="true" href="#next">#</a></h2>
+<p>With control flow established, upcoming posts will explore the type system — how LQ tracks types through the graph, how generic methods work, and how the compiler verifies entire programs structurally. After that: the agent serialization format that lets AI write LQ programs directly, without going through the visual representation at all.</p>
+<p>The pieces are in place. The system is starting to show its shape.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/control-flow/">Control-Flow</a></li>
+      <li><a href="http://localhost:1313/tags/closures/">Closures</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
