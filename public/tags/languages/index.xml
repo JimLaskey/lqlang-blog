@@ -6,8 +6,17 @@
     <description>Recent content in Languages on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 14 Apr 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2026 10:00:00 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/languages/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spaces, Constructors, and Dispatch</title>
+      <link>http://localhost:1313/blog/spaces-constructors-dispatch/</link>
+      <pubDate>Tue, 21 Apr 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/spaces-constructors-dispatch/</guid>
+      <description>&lt;p&gt;Previous posts covered how data flows through graphs and how closures provide control flow. This post looks at how LQ organizes code: where methods live, how objects are constructed, how the right method gets called, and how LQ simulates traditional object-oriented dispatch without building it into the language.&lt;/p&gt;
+&lt;h2 id=&#34;spaces&#34;&gt;Spaces&lt;/h2&gt;
+&lt;p&gt;A &lt;strong&gt;space&lt;/strong&gt; is a file containing a set of related methods. Think of it as a module or namespace — a way to group methods that belong together thematically.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Control Flow from Closures</title>
       <link>http://localhost:1313/blog/control-flow-from-closures/</link>

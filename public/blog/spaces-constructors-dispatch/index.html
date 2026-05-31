@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Spaces, Constructors, and Dispatch | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, future-of-code, programming-languages, howto, LLM">
+<meta name="description" content="Previous posts covered how data flows through graphs and how closures provide control flow. This post looks at how LQ organizes code: where methods live, how objects are constructed, how the right method gets called, and how LQ simulates traditional object-oriented dispatch without building it into the language.
+Spaces
+A space is a file containing a set of related methods. Think of it as a module or namespace — a way to group methods that belong together thematically.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/spaces-constructors-dispatch/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/spaces-constructors-dispatch/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Spaces, Constructors, and Dispatch
+    </h1>
+    <div class="post-meta"><span title='2026-04-21 10:00:00 -0300 ADT'>April 21, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>Previous posts covered how data flows through graphs and how closures provide control flow. This post looks at how LQ organizes code: where methods live, how objects are constructed, how the right method gets called, and how LQ simulates traditional object-oriented dispatch without building it into the language.</p>
+<h2 id="spaces">Spaces<a hidden class="anchor" aria-hidden="true" href="#spaces">#</a></h2>
+<p>A <strong>space</strong> is a file containing a set of related methods. Think of it as a module or namespace — a way to group methods that belong together thematically.</p>
+<p>A space is not a class. There are no properties. No inheritance hierarchy. No <code>public</code> or <code>private</code> keywords. A space is simply an organizational unit — a container for methods that share a common theme.</p>
+<p>A space named <code>Geometry</code> might contain methods for working with points, lines, and shapes. A space named <code>JSON</code> might contain <code>readJSON</code>, <code>writeJSON</code>, and related utilities. The grouping is for humans (and agents) reading the code. The compiler treats methods across all spaces uniformly.</p>
+<p>This is a deliberate choice. Classes conflate two concerns: organizing code and defining types. LQ separates them. Spaces organize code. Types are defined by their structure — their properties and the methods that operate on them. The two are independent.</p>
+<h2 id="constructors">Constructors<a hidden class="anchor" aria-hidden="true" href="#constructors">#</a></h2>
+<p>Objects in LQ are created through constructors. A constructor is a regular method — no special syntax, no <code>new</code> keyword — that contains a <strong>pack</strong> node.</p>
+<p>The method&rsquo;s name <em>is</em> the type name. A method called <code>Point</code> that packs <code>x</code> and <code>y</code> values creates an instance of type <code>Point</code>.</p>
+<figure style="text-align: center;">
+    <img alt="Point constructor method with pack node" width="25%" src="/blog/images/tutorial4.1.png">
+    <figcaption><code>Point</code> constructor — a method containing a <code>pack</code> node</figcaption>
+</figure>
+<p>The <code>pack</code> node takes named inputs — the properties of the type — and produces a single output: an instance of the enclosing method&rsquo;s type. In this case, <code>pack</code> receives <code>x</code> and <code>y</code> and emits a <code>Point</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Point</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, x, y):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>x <span style="color:#f92672">=</span> x
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>y <span style="color:#f92672">=</span> y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>p <span style="color:#f92672">=</span> Point(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>)
+</span></span></code></pre></div><p>In LQ, the <code>Point</code> method receives <code>x</code> and <code>y</code> as input parameters, wires them into the <code>pack</code> node, and outputs the constructed <code>Point</code>. Calling <code>Point(3, 4)</code> as a node in another graph produces a <code>Point</code> instance.</p>
+<p>There&rsquo;s no distinction between a constructor and any other method. A constructor is just a method that happens to contain a <code>pack</code> node. This means constructors can contain arbitrary logic — validation, derived values, conditional initialization — using the same nodes and closures as any other method.</p>
+<p>To access properties from a packed instance, the corresponding <strong>unpack</strong> node extracts all named values at once. Wire a <code>Point</code> into an <code>unpack</code> node and the <code>x</code> and <code>y</code> values flow out through separate output terminals. In this example, we add two point together.</p>
+<figure style="text-align: center;">
+    <img alt="unpack node extracting properties from a Point instance" width="50%" src="/blog/images/tutorial4.2.png">
+    <figcaption><code>unpack</code> — extracting properties from a <code>Point</code></figcaption>
+</figure>
+<h3 id="properties-getters-and-withers">Properties, Getters, and Withers<a hidden class="anchor" aria-hidden="true" href="#properties-getters-and-withers">#</a></h3>
+<p>The named values inside a packed instance are <strong>properties</strong>. Individual properties are accessed through <strong>getter</strong> nodes — a node labeled with the property name that takes the instance as input and outputs the property value. Taking the previous example and replacing unpack with specific getters.</p>
+<figure style="text-align: center;">
+    <img alt="getter nodes extracting x and y from a Point" width="50%" src="/blog/images/tutorial4.3.png">
+    <figcaption>getter nodes — accessing individual properties</figcaption>
+</figure>
+<p>Setting a property works differently than in most languages. Instances in LQ are <strong>immutable</strong> — once packed, the values inside cannot be changed. Instead, LQ uses <strong>withers</strong>: a setter that creates a <em>new</em> instance with the updated value, leaving the original untouched.</p>
+<figure style="text-align: center;">
+    <img alt="wither node creating a new Point with a different x value" width="40%" src="/blog/images/tutorial4.4.png">
+    <figcaption>wither — creates a new <code>Point</code> with the updated property</figcaption>
+</figure>
+<p>A wither on a <code>Point</code> that sets <code>x</code> to 10.0 produces a new <code>Point</code> with <code>x = 10.0</code> and the original <code>y</code> value carried over. The original <code>Point</code> is unchanged.</p>
+<p>This is functional property modification — the same pattern found in Swift&rsquo;s value types and Kotlin&rsquo;s <code>copy()</code>. The compiler optimizes chained withers into single allocations, so the visual clarity of immutability doesn&rsquo;t come at a performance cost.</p>
+<h3 id="embedded-types-and-property-elision">Embedded Types and Property Elision<a hidden class="anchor" aria-hidden="true" href="#embedded-types-and-property-elision">#</a></h3>
+<p>A type can <strong>embed</strong> another type as a property. A <code>Circle</code> constructor might pack a <code>center</code> of type <code>Point</code> alongside a <code>radius</code>. Nothing unusual so far — that&rsquo;s just composition.</p>
+<p>What makes embedding powerful is <strong>elision</strong>: the embedded type&rsquo;s properties become accessible <em>as if they were properties of the outer type</em>. A <code>Circle</code> that embeds a <code>Point</code> as its center means <code>Circle.x</code> and <code>Circle.y</code> work directly — no need to first extract the <code>center</code> and then access its properties.</p>
+<figure style="text-align: center;">
+    <img alt="Circle embedding Point with elided property access" width="25%" src="/blog/images/tutorial4.5.png">
+    <figcaption>property elision — constructor for <code>Circle</code></figcaption>
+</figure>
+<figure style="text-align: center;">
+    <img alt="Circle embedding Point with elided property access" width="40%" src="/blog/images/tutorial4.6.png">
+    <figcaption>property elision — <code>Circle.x</code> accesses the embedded <code>Point</code>'s property directly</figcaption>
+</figure>
+<p>The getter for <code>x</code> on a <code>Circle</code> reaches through the embedded <code>Point</code> automatically. The wither works the same way — setting <code>x</code> on a <code>Circle</code> creates a new <code>Circle</code> with a new embedded <code>Point</code>, all in one step. The nesting is invisible at the call site.</p>
+<h2 id="method-dispatch">Method Dispatch<a hidden class="anchor" aria-hidden="true" href="#method-dispatch">#</a></h2>
+<p>When a graph contains a node labeled <code>distanceTo</code>, how does the compiler know which method to call? LQ uses <strong>signature-based dispatch</strong> — the types of all input terminals determine which method runs.</p>
+<p>A method named <code>distanceTo</code> that takes <code>(Point, Point)</code> is a different method from <code>distanceTo</code> that takes <code>(Point, Line)</code>. The compiler examines the types flowing into the node&rsquo;s input terminals and selects the matching signature. No ambiguity. No guessing.</p>
+<p>This is static dispatch — resolved at compile time. The compiler knows the types, matches the signature, and emits a direct call. Zero runtime overhead.</p>
+<h3 id="dynamic-dispatch-with-any">Dynamic Dispatch with Any<a hidden class="anchor" aria-hidden="true" href="#dynamic-dispatch-with-any">#</a></h3>
+<p>When an input terminal is typed as <code>Any</code>, the compiler can&rsquo;t resolve the method at compile time. Instead, dispatch happens at runtime — the actual types of the values flowing through determine which method runs.</p>
+<p>This is LQ&rsquo;s equivalent of virtual method dispatch. A method that accepts <code>(Any, Point)</code> will match against whatever concrete type arrives at runtime — <code>(Circle, Point)</code>, <code>(Rectangle, Point)</code>, <code>(Triangle, Point)</code> — selecting the appropriate implementation.</p>
+<p>The mechanism is the same as static dispatch. The difference is <em>when</em> the matching happens: compile time for known types, runtime for <code>Any</code>. No separate vtable. No inheritance chain. Just signature matching applied at the moment the types are known.</p>
+<h3 id="dispatch-on-embedded-types">Dispatch on Embedded Types<a hidden class="anchor" aria-hidden="true" href="#dispatch-on-embedded-types">#</a></h3>
+<p>Property elision has a counterpart in dispatch: a method that accepts <code>Point</code> also matches <code>Circle</code> — because <code>Circle</code> embeds <code>Point</code>. The compiler recognizes the embedded structure and routes the call accordingly.</p>
+<p>This provides a form of <strong>multiple inheritance</strong> without inheritance. A type that embeds both <code>Point</code> and <code>Color</code> matches methods that accept <code>Point</code>, methods that accept <code>Color</code>, and methods that accept the full type. No diamond problem. No fragile base classes. The matching is structural — if the embedded type is present, the method applies.</p>
+<p>Combined with <code>Any</code> for dynamic dispatch, embedded types give LQ the expressive power of class hierarchies — polymorphism, code reuse, structural subtyping — without the rigidity of an inheritance tree.</p>
+<h2 id="this">&ldquo;this&rdquo;<a hidden class="anchor" aria-hidden="true" href="#this">#</a></h2>
+<p>Traditional object-oriented languages have a built-in concept of <code>this</code> (or <code>self</code>) — the object a method belongs to. The method is bound to the object. The dispatch is tied to the class hierarchy.</p>
+<p>LQ has no built-in <code>this</code>. Instead, <code>this</code> is a <strong>convention</strong> — a pattern built on top of the mechanics already described.</p>
+<p>Here&rsquo;s how it works: an input parameter is named <code>this</code>. Naming a parameter <code>this</code> creates a local called <code>this</code> inside the method. The default value of that parameter is also <code>this</code> — meaning if nothing is wired to the terminal, the method uses the current <code>this</code> from the calling context.
+This creates familiar object-oriented behavior through composition of existing features:</p>
+<p><strong>Instance methods.</strong> A method with a <code>this</code> parameter typed as <code>Point</code> behaves like a method on the <code>Point</code> type. The <code>this</code> value arrives through the parameter, making the instance available inside the method. Properties are accessed by unpacking <code>this</code>.</p>
+<p><strong>Chained calls.</strong> When one method calls another without wiring anything to the callee&rsquo;s <code>this</code> terminal, the current <code>this</code> flows through automatically via the default value. Method calls on the same object chain naturally without explicit plumbing.</p>
+<p><strong>Virtual dispatch.</strong> Type the <code>this</code> parameter as <code>Any</code> and the method becomes dynamically dispatched — the actual type at runtime determines which implementation runs. This is the equivalent of a virtual method in a class-based language, achieved through the combination of <code>Any</code> typing and signature-based dispatch.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Point</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">magnitude</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> math<span style="color:#f92672">.</span>sqrt(self<span style="color:#f92672">.</span>x <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>y <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>)
+</span></span></code></pre></div><p>In LQ, a <code>magnitude</code> method with a <code>this</code> parameter typed as <code>Point</code> unpacks <code>this</code> to get <code>x</code> and <code>y</code>, computes the result, and outputs it. No class declaration. No inheritance syntax. The method operates on <code>Point</code> because the types say so.</p>
+<h2 id="no-classes-same-power-and-then-some">No Classes, Same Power, And Then Some<a hidden class="anchor" aria-hidden="true" href="#no-classes-same-power-and-then-some">#</a></h2>
+<p>The four concepts — spaces, constructors, dispatch, and <code>this</code> — combine to provide the same organizational power as class-based OOP without the rigidity:</p>
+<p><strong>Spaces</strong> group related methods without coupling them to a type hierarchy. Methods for <code>Point</code> can live alongside methods for <code>Line</code> in a <code>Geometry</code> space, or be spread across multiple spaces. The organization is for readability, not for the compiler.</p>
+<p><strong>Constructors</strong> are just methods with <code>pack</code> nodes. No special lifecycle. No inheritance chains to manage. Construction logic is ordinary dataflow.</p>
+<p><strong>Dispatch</strong> is based on what data actually flows, not on what class an object belongs to. Static when the types are known, dynamic when <code>Any</code> is involved. The same mechanism handles both.</p>
+<p><strong>&ldquo;this&rdquo;</strong> is a convention, not a keyword. Object-oriented patterns emerge from default parameter values and signature matching — not from language primitives.</p>
+<p>This separation means LQ avoids the problems that plague class-based languages: fragile base class issues, deep inheritance chains, the expression problem. Types are defined by structure. Behavior is defined by signatures. Organization is defined by spaces. Each concern is independent.</p>
+<h2 id="next">Next<a hidden class="anchor" aria-hidden="true" href="#next">#</a></h2>
+<p>With code organization and dispatch in place, upcoming posts will explore the type system in more depth, specifically some of the built in types such as array and map.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

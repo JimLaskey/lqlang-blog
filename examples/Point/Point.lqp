@@ -1,0 +1,50 @@
+{
+  "debugStateData" : "WwoKXQ==",
+  "expandedFolders" : [
+
+  ],
+  "id" : "75B6DEB4-BA20-451F-A72D-020BD19BD4F2",
+  "lastSelectedItem" : "Point",
+  "sectionLayouts" : {
+    "Point" : {
+      "displayOrder" : [
+        "F66505A8-8926-47A4-AA79-93A75BE556C1",
+        "639771DD-215A-4F7B-9A1A-66C4524B4B9D",
+        "6605581F-94D1-4BAF-A5FB-78DFA6B47E0B",
+        "149E1F17-8CD4-4F34-8242-F189EEDB94F3",
+        "DABA5327-48AC-4F19-A89B-73A7C1CBF34B",
+        "2C0E890E-C640-4F15-AD88-2AD463DCCEF0"
+      ],
+      "sectionStates" : {
+        "149E1F17-8CD4-4F34-8242-F189EEDB94F3" : {
+          "isExpanded" : true
+        },
+        "2C0E890E-C640-4F15-AD88-2AD463DCCEF0" : {
+          "isExpanded" : true,
+          "manualHeight" : 414.36328125
+        },
+        "639771DD-215A-4F7B-9A1A-66C4524B4B9D" : {
+          "isExpanded" : true
+        },
+        "6605581F-94D1-4BAF-A5FB-78DFA6B47E0B" : {
+          "isExpanded" : true,
+          "manualHeight" : 351.2734375
+        },
+        "DABA5327-48AC-4F19-A89B-73A7C1CBF34B" : {
+          "isExpanded" : true
+        },
+        "F66505A8-8926-47A4-AA79-93A75BE556C1" : {
+          "isExpanded" : false,
+          "manualHeight" : 279.15625
+        }
+      },
+      "sortMode" : "custom"
+    }
+  },
+  "selectedItems" : [
+    "Point"
+  ],
+  "showLeftSidebar" : true,
+  "showRightSidebar" : true,
+  "version" : "0.0.1"
+}
