@@ -6,8 +6,16 @@
     <description>Recent content in Future-of-Code on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 21 Apr 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 28 Apr 2026 10:00:00 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/future-of-code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The LQ Type System</title>
+      <link>http://localhost:1313/blog/the-lq-type-system/</link>
+      <pubDate>Tue, 28 Apr 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/the-lq-type-system/</guid>
+      <description>&lt;p&gt;LQ is statically typed with &lt;strong&gt;value semantics&lt;/strong&gt; and &lt;strong&gt;immutability by default&lt;/strong&gt;. There are no classes and no inheritance — every type is a constructor. &amp;ldquo;Methods all the way down.&amp;rdquo; A value is built by calling its type name, and &amp;ldquo;mutation&amp;rdquo; means producing a new value, never writing in place. An &lt;code&gt;Any&lt;/code&gt; type provides a typed escape hatch when dynamic dispatch is needed.&lt;/p&gt;
+&lt;p&gt;This post walks through the core types, what makes each one interesting, and shows real LQ programs that exercise them.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Spaces, Constructors, and Dispatch</title>
       <link>http://localhost:1313/blog/spaces-constructors-dispatch/</link>

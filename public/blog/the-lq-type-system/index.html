@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>The LQ Type System | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, future-of-code, programming-languages, howto, LLM, types">
+<meta name="description" content="
+&gt; Apologies for the gap between posts. I&rsquo;ve been away, and the time has gone to heavy lifting — porting Skia to LQ and building an LQ UI library. All good work, and I&rsquo;m excited about where things are headed.
+
+LQ is statically typed with value semantics and immutability by default. There are no classes and no inheritance — every type is a constructor. &ldquo;Methods all the way down.&rdquo; A value is built by calling its type name, and &ldquo;mutation&rdquo; means producing a new value, never writing in place. An Any type provides a typed escape hatch when dynamic dispatch is needed.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/the-lq-type-system/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/the-lq-type-system/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      The LQ Type System
+    </h1>
+    <div class="post-meta"><span title='2026-04-28 10:00:00 -0300 ADT'>April 28, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><blockquote>
+<p><em>&gt; Apologies for the gap between posts. I&rsquo;ve been away, and the time has gone to heavy lifting — porting Skia to LQ and building an LQ UI library. All good work, and I&rsquo;m excited about where things are headed.</em></p>
+</blockquote>
+<p>LQ is statically typed with <strong>value semantics</strong> and <strong>immutability by default</strong>. There are no classes and no inheritance — every type is a constructor. &ldquo;Methods all the way down.&rdquo; A value is built by calling its type name, and &ldquo;mutation&rdquo; means producing a new value, never writing in place. An <code>Any</code> type provides a typed escape hatch when dynamic dispatch is needed.</p>
+<p>This post walks through the core types, what makes each one interesting, and shows real LQ programs that exercise them.</p>
+<blockquote>
+<p>The geometry and graphics types — <code>Point</code>, <code>Size</code>, <code>Rect</code>, <code>Color</code>, <code>Paint</code>, <code>View</code>, and others — are a separate layer built on top of these primitives.</p>
+</blockquote>
+<h2 id="integers">Integers<a hidden class="anchor" aria-hidden="true" href="#integers">#</a></h2>
+<p>Four widths, signed and unsigned: <code>i8</code>/<code>u8</code>, <code>i16</code>/<code>u16</code>, <code>i32</code>/<code>u32</code>, <code>i64</code>/<code>u64</code>. The default integer is <code>i64</code>.</p>
+<p>One design choice worth calling out: <strong>signedness is operator-driven, not type-driven</strong>. Operators assume signed semantics by default. Prefix with <code>#</code> to get unsigned behavior for the operations where it actually matters — comparisons (<code>#&lt;</code>, <code>#&lt;=</code>, <code>#&gt;</code>, <code>#&gt;=</code>), division and modulo (<code>#/</code>, <code>#%</code>), and right shift (<code>#&gt;&gt;</code>). The common signed case stays clean. Exact control is there when needed.</p>
+<p>The difference matters. <code>-1</code> in binary is all ones — under signed comparison it&rsquo;s negative, under unsigned comparison it&rsquo;s the largest possible value:</p>
+<figure style="text-align: center;">
+    <img alt="signed vs unsigned comparison" width="35%" src="/blog/images/tutorial5.1.png">
+    <figcaption>same value, different answer — <code>&lt; 0</code> vs <code>#&lt; 0</code></figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Signed true and unsigned false
+</span></span></code></pre></div><p>Only comparison, division/modulo, and right-shift have <code>#</code> forms — the operations where signedness actually changes the result.</p>
+<h2 id="floats">Floats<a hidden class="anchor" aria-hidden="true" href="#floats">#</a></h2>
+<p>IEEE-754: <code>f32</code> (single) and <code>f64</code> (double). The default is <code>f64</code>. All geometry and coordinate types in the UI layer use <code>f64</code> as well.</p>
+<h2 id="boolean">Boolean<a hidden class="anchor" aria-hidden="true" href="#boolean">#</a></h2>
+<p><code>boolean</code>, with values <code>true</code> and <code>false</code>.</p>
+<h2 id="array">Array<a hidden class="anchor" aria-hidden="true" href="#array">#</a></h2>
+<p>Array syntax is <code>[ElementType]</code> — <code>[i64]</code>, <code>[String]</code>, <code>[[i32]]</code> for nested arrays.</p>
+<p>The elegant part: <strong>arrays and cursors are unified</strong>. A cursor is simply an array that spans a sub-range of the same backing buffer. Slicing doesn&rsquo;t copy — it just narrows the window.</p>
+<p>This makes cursor operations cheap and composable:</p>
+<ul>
+<li><code>next</code> / <code>prev</code> — first or last element plus the cursor advanced or retreated by one</li>
+<li><code>find(x)</code> — cursor positioned at the first match</li>
+<li><code>before</code> / <code>after</code> — elements before or after the cursor in the original array</li>
+<li><code>withBefore</code> / <code>withAfter</code> — those elements <em>plus</em> the cursor</li>
+<li><code>empty</code> — true when the range is exhausted</li>
+</ul>
+<p>The operations that reach outside the cursor (<code>before</code>, <code>after</code>, <code>withBefore</code>, <code>withAfter</code>) take the original array as an explicit argument. And because everything is immutable, array &ldquo;edits&rdquo; produce new arrays through construction and cursor recombination rather than mutation.</p>
+<figure style="text-align: center;">
+    <img alt="array find then withBefore" width="40%" src="/blog/images/tutorial5.2.png">
+    <figcaption>cursor slicing — <code>find</code> then <code>withBefore</code> over an array</figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[apple, blueberry]
+</span></span></code></pre></div><p><code>find</code> locates <code>&quot;blueberry&quot;</code>, <code>withBefore</code> returns the cursor plus everything before it — a fresh view over the same backing buffer, never a copy.</p>
+<h2 id="string">String<a hidden class="anchor" aria-hidden="true" href="#string">#</a></h2>
+<p>Strings are UTF-8 encoded and immutable. Because of the internal representation, strings share the cursor and slice operations with arrays — slicing a string is pointer arithmetic, not copying. Since the encoding is UTF-8, cursor operations like <code>next</code> and <code>prev</code> may advance multiple bytes and return a codepoint integer value.</p>
+<p>Typical operations include <code>join</code>, <code>split</code>, <code>replace</code>, <code>upper</code>, <code>lower</code>, <code>trim</code>, <code>find</code>, <code>contains</code>, <code>length</code>, and <code>substring</code>. String interpolation literals (<code>&quot;Result: \{x}&quot;</code>) format values directly.</p>
+<figure style="text-align: center;">
+    <img alt="string find then withBefore" width="35%" src="/blog/images/tutorial5.3.png">
+    <figcaption>string slicing — same cursor algebra as arrays</figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>apple blueberry
+</span></span></code></pre></div><p>The same <code>find</code> and <code>withBefore</code> pattern as arrays, applied to a string. No copying — just new windows over the same buffer.</p>
+<h2 id="map">Map<a hidden class="anchor" aria-hidden="true" href="#map">#</a></h2>
+<p>Maps are hash-based with copy-on-write semantics. A missing key returns the default value for the type — no null, no exception.</p>
+<p>Maps are constructed with <code>map(keysArray, valuesArray)</code> or, in the IDE, via a <strong>table node</strong> set to <code>Map</code>, <code>StringMap</code>, or <code>Enum</code>. (<code>StringMap</code> keys are unquoted identifiers; <code>Enum</code> is a <code>Map&lt;String, i64&gt;</code> of named constants.)</p>
+<figure style="text-align: center;">
+    <img alt="map construction, get, and put" width="40%" src="/blog/images/tutorial5.4.png">
+    <figcaption>building and reading a <code>Map</code> — <code>get</code> and <code>put</code></figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>2.99
+</span></span><span style="display:flex;"><span>[cherry: 2.99, date: 10, blueberry: 3.7, apple: 1.25]
+</span></span></code></pre></div><p><code>get</code> reads a value. <code>put</code> produces a <em>new</em> map with the added entry, leaving the original untouched. Immutability by default — the pattern that runs through every LQ type.</p>
+<h2 id="range-and-steprange">Range and StepRange<a hidden class="anchor" aria-hidden="true" href="#range-and-steprange">#</a></h2>
+<p>A <code>Range</code> is a half-open interval. Two literal forms:</p>
+<ul>
+<li><code>1..10</code> is <strong>exclusive</strong> — the set 1 through 9</li>
+<li><code>1...10</code> is <strong>inclusive</strong> — the set 1 through 10</li>
+</ul>
+<p>A <code>Range</code> displays in its inclusive form, so <code>1..10</code> prints as <code>1...9</code>.</p>
+<figure style="text-align: center;">
+    <img alt="exclusive vs inclusive range" width="40%" src="/blog/images/tutorial5.5.png">
+    <figcaption>exclusive vs inclusive — two literal forms, one element apart</figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Exclusive 1...9 and inclusive 1...10
+</span></span></code></pre></div><p><code>StepRange</code> adds a stride — supporting positive and negative steps. A step of zero yields an empty range.</p>
+<h2 id="closure">Closure<a hidden class="anchor" aria-hidden="true" href="#closure">#</a></h2>
+<p>A closure is a first-class value — behavior packaged as data, as covered in <a href="/blog/abutting-and-closures">Abutting and Closures</a>. Closures and callbacks share the same representation, so a block of dataflow can be passed wherever a function is expected.</p>
+<figure style="text-align: center;">
+    <img alt="closure invoked with an argument array" width="30%" src="/blog/images/tutorial5.6.png">
+    <figcaption>a closure value — <code>invoke</code> spreads inputs and gathers the result</figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[30]
+</span></span></code></pre></div><p>The framed subgraph <em>is</em> the closure — here <code>(a, b) → a + b</code>. <code>invoke</code> spreads the array <code>[10, 20]</code> into the parameters and collects the output.</p>
+<h2 id="any">Any<a hidden class="anchor" aria-hidden="true" href="#any">#</a></h2>
+<p><code>Any</code> is the one type that carries runtime type information. Boxing wraps a concrete value into <code>Any</code>; unboxing extracts it. <code>typeOf</code> returns the type as a value.</p>
+<p>Type identity is efficient — each type has a unique layout descriptor, so <code>typeOf(x) == &quot;Color&quot;</code> compiles down to a pointer comparison, not a string match.</p>
+<figure style="text-align: center;">
+    <img alt="Color value and its typeOf" width="40%" src="/blog/images/tutorial5.7.png">
+    <figcaption><code>Any</code> and <code>typeOf</code> — runtime type identity</figcaption>
+</figure>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>The structure Color(r: 255, g: 255, b: 127, a: 255) is of type Color
+</span></span></code></pre></div><p><code>Any</code> is what makes heterogeneous collections, generic runtime dispatch, and reflective checks possible — without giving up static typing everywhere else.</p>
+<h2 id="void">Void<a hidden class="anchor" aria-hidden="true" href="#void">#</a></h2>
+<p><code>Void</code> is the no-value type — the result of <code>println</code>, side-effecting calls, and similar operations. Never required to be written explicitly.</p>
+<h2 id="type-coercion">Type Coercion<a hidden class="anchor" aria-hidden="true" href="#type-coercion">#</a></h2>
+<p>When two different types meet as operands of a binary operator, LQ promotes both to a common type — mixing <code>i32</code> and <code>i64</code> resolves to <code>i64</code>, mixing <code>i64</code> and <code>f64</code> resolves to <code>f64</code> — rather than raising an error. <code>Any</code> participates when one side is dynamic.</p>
+<h2 id="just-values">Just Values<a hidden class="anchor" aria-hidden="true" href="#just-values">#</a></h2>
+<p>Every type in LQ follows the same principles: constructed by calling its name, immutable by default, modified by producing new values. Arrays, strings, maps, ranges, closures — each one is a value that flows through the graph. No reference semantics. No hidden mutation.</p>
+<h2 id="next">Next<a hidden class="anchor" aria-hidden="true" href="#next">#</a></h2>
+<p>With core types covered, upcoming posts will cover how these types fold into the language; forEach, reduction and gathering.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+      <li><a href="http://localhost:1313/tags/types/">Types</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="https://www.linkedin.com/in/jlaskey/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
