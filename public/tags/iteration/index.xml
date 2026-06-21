@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Iteration on LQ Programming Language</title>
+    <link>http://localhost:1313/tags/iteration/</link>
+    <description>Recent content in Iteration on LQ Programming Language</description>
+    <generator>Hugo -- 0.157.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 May 2026 10:00:00 -0300</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/iteration/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Iteration Through Terminal Annotation</title>
+      <link>http://localhost:1313/blog/iteration-though-annotation/</link>
+      <pubDate>Tue, 05 May 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/iteration-though-annotation/</guid>
+      <description>&lt;p&gt;Earlier posts introduced &lt;code&gt;forEach&lt;/code&gt; as a way to iterate an array — attach a forEach terminal and the node executes once per element. That was the simplified version. The full story is richer: LQ has &lt;strong&gt;seven terminal types&lt;/strong&gt;, and the choice of terminal controls how data enters, exits, and flows through iteration. Iteration, gathering, reduction, and parallelism are all governed at the terminal — not in the node logic.&lt;/p&gt;
+&lt;p&gt;This post covers the terminal types, what each one does, and how they combine to express the full range of collection processing.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

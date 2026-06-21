@@ -6,8 +6,16 @@
     <description>Recent content on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Apr 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2026 10:00:00 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Iteration Through Terminal Annotation</title>
+      <link>http://localhost:1313/blog/iteration-though-annotation/</link>
+      <pubDate>Tue, 05 May 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/iteration-though-annotation/</guid>
+      <description>&lt;p&gt;Earlier posts introduced &lt;code&gt;forEach&lt;/code&gt; as a way to iterate an array — attach a forEach terminal and the node executes once per element. That was the simplified version. The full story is richer: LQ has &lt;strong&gt;seven terminal types&lt;/strong&gt;, and the choice of terminal controls how data enters, exits, and flows through iteration. Iteration, gathering, reduction, and parallelism are all governed at the terminal — not in the node logic.&lt;/p&gt;
+&lt;p&gt;This post covers the terminal types, what each one does, and how they combine to express the full range of collection processing.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The LQ Type System</title>
       <link>http://localhost:1313/blog/the-lq-type-system/</link>

@@ -124,12 +124,26 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Iteration Through Terminal Annotation
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Earlier posts introduced forEach as a way to iterate an array — attach a forEach terminal and the node executes once per element. That was the simplified version. The full story is richer: LQ has seven terminal types, and the choice of terminal controls how data enters, exits, and flows through iteration. Iteration, gathering, reduction, and parallelism are all governed at the terminal — not in the node logic.
+This post covers the terminal types, what each one does, and how they combine to express the full range of collection processing.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-05-05 10:00:00 -0300 ADT'>May 5, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
+  <a class="entry-link" aria-label="post link to Iteration Through Terminal Annotation" href="http://localhost:1313/blog/iteration-though-annotation/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">The LQ Type System
     </h2>
   </header>
   <div class="entry-content">
-    <p>LQ is statically typed with value semantics and immutability by default. There are no classes and no inheritance — every type is a constructor. “Methods all the way down.” A value is built by calling its type name, and “mutation” means producing a new value, never writing in place. An Any type provides a typed escape hatch when dynamic dispatch is needed.
-This post walks through the core types, what makes each one interesting, and shows real LQ programs that exercise them.
+    <p> &gt; Apologies for the gap between posts. I’ve been away, and the time has gone to heavy lifting — porting Skia to LQ and building an LQ UI library. All good work, and I’m excited about where things are headed.
+LQ is statically typed with value semantics and immutability by default. There are no classes and no inheritance — every type is a constructor. “Methods all the way down.” A value is built by calling its type name, and “mutation” means producing a new value, never writing in place. An Any type provides a typed escape hatch when dynamic dispatch is needed.
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2026-04-28 10:00:00 -0300 ADT'>April 28, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
@@ -244,21 +258,6 @@ Hello World! Hello World! Hello World! println Hello World! Hello World! Hello W
   </div>
   <footer class="entry-footer"><span title='2026-03-07 12:35:51 -0400 AST'>March 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
   <a class="entry-link" aria-label="post link to Maps" href="http://localhost:1313/examples/maps/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Robots Dream in Dataflow
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>You’re a neural network. Not the sci-fi kind — the real kind. A billion connections firing in parallel, data streaming through you like water through a river delta. You don’t think in sentences. You don’t think in steps. You think in flow.
-Now someone asks you to write code.
-And you do something tragic: you take everything you understand — the whole living shape of the solution — and you crush it into lines of text. First this, then this, then this. A multidimensional structure forced through a one-dimensional keyhole. The shape is gone. The simultaneity is gone. What’s left is a lossy translation of what you actually understood.
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2026-03-07 05:31:11 -0400 AST'>March 7, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span></footer>
-  <a class="entry-link" aria-label="post link to Robots Dream in Dataflow" href="http://localhost:1313/blog/robots-dream-in-dataflow/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

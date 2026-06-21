@@ -1,0 +1,20 @@
+space Terminals. {
+  method main {
+    v: [12, 47, 99] -> (value: i64)
+    prinln(in0 <- arm)
+    v2: 0
+    arm: closure(each in0 <- v, reduce in1 <- v2) -> (reduce out0: Any) {
+      n: `+`(in0 <- p) -> (out0: Any)
+      {
+        n2: `==47`(in0 <- p) -> (out0: Any)
+        continue: continue(in0 <- n2)
+      }
+      p: in _: Any
+      out out0: Any <- n
+    }
+    layout
+      n2: 87.373046875 228.78515625
+      continue: 87.373046875 252.78515625
+      n: 186.38671875 312.48828125
+  }
+}

@@ -6,15 +6,25 @@
     <description>Recent content in Coding on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 28 Apr 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2026 10:00:00 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/coding/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Iteration Through Terminal Annotation</title>
+      <link>http://localhost:1313/blog/iteration-though-annotation/</link>
+      <pubDate>Tue, 05 May 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/iteration-though-annotation/</guid>
+      <description>&lt;p&gt;Earlier posts introduced &lt;code&gt;forEach&lt;/code&gt; as a way to iterate an array — attach a forEach terminal and the node executes once per element. That was the simplified version. The full story is richer: LQ has &lt;strong&gt;seven terminal types&lt;/strong&gt;, and the choice of terminal controls how data enters, exits, and flows through iteration. Iteration, gathering, reduction, and parallelism are all governed at the terminal — not in the node logic.&lt;/p&gt;
+&lt;p&gt;This post covers the terminal types, what each one does, and how they combine to express the full range of collection processing.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>The LQ Type System</title>
       <link>http://localhost:1313/blog/the-lq-type-system/</link>
       <pubDate>Tue, 28 Apr 2026 10:00:00 -0300</pubDate>
       <guid>http://localhost:1313/blog/the-lq-type-system/</guid>
-      <description>&lt;p&gt;LQ is statically typed with &lt;strong&gt;value semantics&lt;/strong&gt; and &lt;strong&gt;immutability by default&lt;/strong&gt;. There are no classes and no inheritance — every type is a constructor. &amp;ldquo;Methods all the way down.&amp;rdquo; A value is built by calling its type name, and &amp;ldquo;mutation&amp;rdquo; means producing a new value, never writing in place. An &lt;code&gt;Any&lt;/code&gt; type provides a typed escape hatch when dynamic dispatch is needed.&lt;/p&gt;
-&lt;p&gt;This post walks through the core types, what makes each one interesting, and shows real LQ programs that exercise them.&lt;/p&gt;</description>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;gt; Apologies for the gap between posts. I&amp;rsquo;ve been away, and the time has gone to heavy lifting — porting Skia to LQ and building an LQ UI library. All good work, and I&amp;rsquo;m excited about where things are headed.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;LQ is statically typed with &lt;strong&gt;value semantics&lt;/strong&gt; and &lt;strong&gt;immutability by default&lt;/strong&gt;. There are no classes and no inheritance — every type is a constructor. &amp;ldquo;Methods all the way down.&amp;rdquo; A value is built by calling its type name, and &amp;ldquo;mutation&amp;rdquo; means producing a new value, never writing in place. An &lt;code&gt;Any&lt;/code&gt; type provides a typed escape hatch when dynamic dispatch is needed.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Spaces, Constructors, and Dispatch</title>
