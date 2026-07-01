@@ -1,5 +1,5 @@
 +++
-date = '2026-05-12T10:00:00-03:00'
+date = '2026-06-01T10:00:00-03:00'
 draft = false
 title = 'Packing Spaghetti'
 author = 'Jim Laskey'
