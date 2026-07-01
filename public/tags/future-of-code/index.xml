@@ -6,8 +6,20 @@
     <description>Recent content in Future-of-Code on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 May 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 12 May 2026 10:00:00 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/future-of-code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Packing Spaghetti</title>
+      <link>http://localhost:1313/blog/packing-spaghetti/</link>
+      <pubDate>Tue, 12 May 2026 10:00:00 -0300</pubDate>
+      <guid>http://localhost:1313/blog/packing-spaghetti/</guid>
+      <description>&lt;p&gt;The most common objection to visual programming languages is the spaghetti problem. As programs grow, connections multiply, wires cross, and the diagram that was supposed to be clearer than text becomes a tangled mess. The criticism is fair — it&amp;rsquo;s a real problem. Here&amp;rsquo;s an example of AI-generated LQ code that demonstrates exactly this:&lt;/p&gt;
+&lt;figure style=&#34;text-align: center;&#34;&gt;
+    &lt;img alt=&#34;AI generated code with tangled connections&#34; width=&#34;60%&#34; src=&#34;http://localhost:1313/blog/images/tutorial7.1.png&#34;&gt;
+    &lt;figcaption&gt;the spaghetti problem — connections everywhere&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;LQ takes this problem seriously. The solution isn&amp;rsquo;t to limit the language or hide complexity behind abstractions. The solution is &lt;strong&gt;packing&lt;/strong&gt; — combining multiple values into structured types and letting the terminal system spread them back out where needed.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Iteration Through Terminal Annotation</title>
       <link>http://localhost:1313/blog/iteration-though-annotation/</link>

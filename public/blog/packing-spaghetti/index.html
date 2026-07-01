@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Packing Spaghetti | LQ Programming Language</title>
+<meta name="keywords" content="programming, coding, ai, claude, dataflow, languages, visual-programming, future-of-code, programming-languages, howto, LLM">
+<meta name="description" content="The most common objection to visual programming languages is the spaghetti problem. As programs grow, connections multiply, wires cross, and the diagram that was supposed to be clearer than text becomes a tangled mess. The criticism is fair — it&rsquo;s a real problem. Here&rsquo;s an example of AI-generated LQ code that demonstrates exactly this:
+
+    
+    the spaghetti problem — connections everywhere
+
+LQ takes this problem seriously. The solution isn&rsquo;t to limit the language or hide complexity behind abstractions. The solution is packing — combining multiple values into structured types and letting the terminal system spread them back out where needed.">
+<meta name="author" content="Jim Laskey">
+<link rel="canonical" href="http://localhost:1313/blog/packing-spaghetti/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.67f688410aaec10fa7185cf97a2cdbf26b1cd35cffc042a39b8c88cc67bc6817.css" integrity="sha256-Z/aIQQquwQ&#43;nGFz5eizb8msc01z/wEKjm4yIzGe8aBc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/blog/packing-spaghetti/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="LQ Programming Language (Alt + H)">LQ Programming Language</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/blog/" title="Blog">
+                    <span>Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/examples/" title="Examples">
+                    <span>Examples</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<div class="post-with-sidebar">
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Packing Spaghetti
+    </h1>
+    <div class="post-meta"><span title='2026-05-12 10:00:00 -0300 ADT'>May 12, 2026</span>&nbsp;·&nbsp;<span>Jim Laskey</span>
+
+</div>
+  </header> 
+  <div class="post-content"><p>The most common objection to visual programming languages is the spaghetti problem. As programs grow, connections multiply, wires cross, and the diagram that was supposed to be clearer than text becomes a tangled mess. The criticism is fair — it&rsquo;s a real problem. Here&rsquo;s an example of AI-generated LQ code that demonstrates exactly this:</p>
+<figure style="text-align: center;">
+    <img alt="AI generated code with tangled connections" width="60%" src="/blog/images/tutorial7.1.png">
+    <figcaption>the spaghetti problem — connections everywhere</figcaption>
+</figure>
+<p>LQ takes this problem seriously. The solution isn&rsquo;t to limit the language or hide complexity behind abstractions. The solution is <strong>packing</strong> — combining multiple values into structured types and letting the terminal system spread them back out where needed.</p>
+<h2 id="the-problem">The Problem<a hidden class="anchor" aria-hidden="true" href="#the-problem">#</a></h2>
+<p>Consider a simple case: four literal values — <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code> — passed to a <code>drawRectangle</code> method.</p>
+<figure style="text-align: center;">
+    <img alt="four literals connected to drawRectangle" width="40%" src="/blog/images/tutorial7.2.png">
+    <figcaption>four connections from four literals</figcaption>
+</figure>
+<p>This is fine when everything is close together. But if the <code>drawRectangle</code> node is any distance from the literals, four separate wires stretch across the diagram. Multiply this across a real program and the spaghetti arrives fast.</p>
+<p>For reference, the <code>drawRectangle</code> method itself is straightforward — an interpolated string fed to <code>println</code>:</p>
+<figure style="text-align: center;">
+    <img alt="drawRectangle method with interpolated text block" width="50%" src="/blog/images/tutorial7.3.png">
+    <figcaption><code>drawRectangle</code> — four inputs, one formatted output</figcaption>
+</figure>
+<p>The method needs four values. The question is how to deliver them without four wires.</p>
+<h2 id="step-1-pack-and-unpack">Step 1: Pack and Unpack<a hidden class="anchor" aria-hidden="true" href="#step-1-pack-and-unpack">#</a></h2>
+<p>The first tool is the <strong>pack/unpack</strong> pair introduced in <a href="/blog/spaces-constructors-dispatch">Spaces, Constructors, and Dispatch</a>. Pack combines multiple values into a single bundle. Unpack separates them back out.</p>
+<figure style="text-align: center;">
+    <img alt="pack and unpack reducing four connections to one" width="50%" src="/blog/images/tutorial7.4.png">
+    <figcaption>pack/unpack — four wires become one</figcaption>
+</figure>
+<p>Four values pack into one connection. That single wire can travel any distance across the diagram. At the destination, unpack restores the original four values. The clutter is gone.</p>
+<p>This works, but it&rsquo;s anonymous — the packed bundle has no type name, no semantic meaning. It&rsquo;s plumbing, not design.</p>
+<h2 id="step-2-a-named-type">Step 2: A Named Type<a hidden class="anchor" aria-hidden="true" href="#step-2-a-named-type">#</a></h2>
+<p>Better: use a <strong>constructor</strong>. Pack the four values into a <code>Rectangle</code> and pass that single object to <code>drawRectangle</code>. The input terminal on <code>drawRectangle</code> is annotated as <strong>unpack</strong> — meaning the contents of the <code>Rectangle</code> are automatically spread to the method&rsquo;s parameters.</p>
+<figure style="text-align: center;">
+    <img alt="Rectangle constructor with unpack terminal" width="50%" src="/blog/images/tutorial7.5.png">
+    <figcaption><code>Rectangle</code> constructor + unpack terminal — one typed connection</figcaption>
+</figure>
+<p>Now the single wire isn&rsquo;t just a bundle of values — it carries a <code>Rectangle</code>. The type has meaning. The unpack terminal tells the method to extract the properties and distribute them to the matching parameters. One connection, full type safety, zero clutter.</p>
+<h2 id="step-3-composing-types">Step 3: Composing Types<a hidden class="anchor" aria-hidden="true" href="#step-3-composing-types">#</a></h2>
+<p>The four values don&rsquo;t have to be flat. A rectangle is naturally two things: a position and a size. The <code>x</code> and <code>y</code> values feed a <code>Point</code> constructor. The <code>width</code> and <code>height</code> feed a <code>Size</code> constructor. Both results connect to <code>drawRectangle</code> through unpack terminals.</p>
+<figure style="text-align: center;">
+    <img alt="Point and Size constructors with unpack terminals" width="50%" src="/blog/images/tutorial7.6.png">
+    <figcaption>composed types — <code>Point</code> and <code>Size</code> unpacked into the method</figcaption>
+</figure>
+<p>Two wires instead of four. Each wire carries a meaningful type. The unpack terminals spread <code>Point</code> into <code>(x, y)</code> and <code>Size</code> into <code>(width, height)</code>. The method&rsquo;s parameter names match the property names — no mapping needed.</p>
+<h2 id="step-4-full-composition">Step 4: Full Composition<a hidden class="anchor" aria-hidden="true" href="#step-4-full-composition">#</a></h2>
+<p>Take it one step further. The <code>Point</code> and <code>Size</code> feed a <code>Rectangle</code> constructor through unpack terminals. The single <code>Rectangle</code> then connects to <code>drawRectangle</code>.</p>
+<figure style="text-align: center;">
+    <img alt="Point and Size into Rectangle constructor, then to drawRectangle" width="50%" src="/blog/images/tutorial7.7.png">
+    <figcaption>full composition — types build into types, one wire at the end</figcaption>
+</figure>
+<p>Four primitives → two intermediate types → one composed type → one connection. The diagram is clean. The types are meaningful. The structure matches how the data is actually organized.</p>
+<h2 id="unpacking-in-iteration">Unpacking in Iteration<a hidden class="anchor" aria-hidden="true" href="#unpacking-in-iteration">#</a></h2>
+<p>The unpack terminal combines naturally with forEach. Consider building a menu from an array of <code>MenuRow</code> objects. Each <code>MenuRow</code> contains the properties needed by the <code>windowMenuAddItem</code> method.</p>
+<figure style="text-align: center;">
+    <img alt="table of MenuRow items with unpacking forEach terminal" width="60%" src="/blog/images/tutorial7.8.png">
+    <figcaption>forEach + unpack — iterating and spreading in one terminal</figcaption>
+</figure>
+<p>A table node produces an array of <code>MenuRow</code> items. The array connects to <code>windowMenuAddItem</code> through a <strong>forEach unpack</strong> terminal — a forEach terminal annotated with unpack. For each <code>MenuRow</code> in the array, the properties are spread to the method&rsquo;s parameters. Iteration and unpacking happen at the same connection point.</p>
+<p>This is the terminal annotation system from <a href="/blog/iteration-through-terminal-annotation">Iteration Through Terminal Annotation</a> combined with the structural typing from this post. No loop. No manual property extraction. One annotated terminal does both jobs.</p>
+<h2 id="the-spaghetti-solution">The Spaghetti Solution<a hidden class="anchor" aria-hidden="true" href="#the-spaghetti-solution">#</a></h2>
+<p>The spaghetti problem is real, but it&rsquo;s a symptom, not a disease. The disease is <strong>unstructured data flowing through too many connections</strong>. The cure is structure: pack related values into types, and let unpack terminals spread them where needed.</p>
+<p>The progression tells the story:</p>
+<ol>
+<li><strong>Raw connections</strong> — four wires, maximum clutter</li>
+<li><strong>Pack/unpack</strong> — one wire, anonymous bundle</li>
+<li><strong>Named type</strong> — one wire, typed and meaningful</li>
+<li><strong>Composed types</strong> — types built from types, one wire at the end</li>
+<li><strong>Iteration + unpack</strong> — the pattern scales to collections</li>
+</ol>
+<p>Each step reduces visual complexity while increasing semantic clarity. The diagram gets simpler <em>and</em> more informative — not one at the expense of the other.</p>
+<p>Visual programming doesn&rsquo;t have to mean spaghetti. It means thinking about structure.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/programming/">Programming</a></li>
+      <li><a href="http://localhost:1313/tags/coding/">Coding</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">Ai</a></li>
+      <li><a href="http://localhost:1313/tags/claude/">Claude</a></li>
+      <li><a href="http://localhost:1313/tags/dataflow/">Dataflow</a></li>
+      <li><a href="http://localhost:1313/tags/languages/">Languages</a></li>
+      <li><a href="http://localhost:1313/tags/visual-programming/">Visual-Programming</a></li>
+      <li><a href="http://localhost:1313/tags/future-of-code/">Future-of-Code</a></li>
+      <li><a href="http://localhost:1313/tags/programming-languages/">Programming-Languages</a></li>
+      <li><a href="http://localhost:1313/tags/howto/">Howto</a></li>
+      <li><a href="http://localhost:1313/tags/llm/">LLM</a></li>
+    </ul>
+  </footer>
+</article>
+<aside class="author-aside">
+  <h3>About the Author</h3>
+  <div class="author-name">
+    <a href="http://localhost:1313/authors/jimlaskey/">Jim Laskey</a>
+  </div>
+  <div class="author-bio"><p>Jim Laskey has been developing compilers and runtimes for over 50 years. He was the Chief Architect of the Prograph visual programming language in the 1980s and is currently working on a new diagrammatic programming language. Prior to retiring, he worked at Symantec, Apple, Azul, Sun and Oracle.</p>
+</div>
+  <div class="author-links">
+    <a href="mailto:diagrammatic.programming@gmail.com">diagrammatic.programming@gmail.com</a>
+  </div>
+</aside>
+
+</div>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">LQ Programming Language</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

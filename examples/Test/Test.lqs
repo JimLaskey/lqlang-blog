@@ -1,0 +1,9 @@
+space Test. {
+  method main {
+    println(each $1 <- n)
+    n: table -> ($4: [String])
+      - "Apple"
+      - "Blueberry"
+      - "Cherry"
+  }
+}

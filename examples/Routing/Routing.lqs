@@ -1,0 +1,186 @@
+space Routing {
+  method main {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    point: Point(x <- x, y <- y) -> (point: Point)
+    size: Size(width <- width, height <- height) -> (size: Size)
+    rectangle: Rectangle(pack point <- point, pack size <- size) -> (rectangle: Rectangle)
+    drawRectangle: drawRectangle(x <- x, y <- y, width <- width, height <- height)
+    drawRectangle2: drawRectangle(pack point <- point, pack size <- size)
+    drawRectangle3: drawRectangle(pack rectangle <- rectangle)
+    n: column {
+      n2: `windowMenuClear()`
+      n3: `windowMenuAddTopLevel("File")`
+      n4: `windowMenuAddTopLevel("Edit")`
+      n5: `windowMenuAddTopLevel("Find")`
+      n6: `windowMenuApply()`
+    }
+    layout
+      y: 208.79985975961176 46.70703125
+      point: 129.33106570192234 146.79296875
+      drawRectangle2: 239.04296875 233.546875
+      size: 221.33106570192234 146.79296875
+      drawRectangle3: 107.04296875 310.70703125
+      rectangle: 107.04296875 233.546875
+      x: 116.79985975961173 46.70703125
+      width: 300.79985975961176 46.70703125
+      height: 392.79985975961176 46.70703125
+      drawRectangle: 340.83106570192234 146.79296875
+      n4: 676.234375 439.8671875
+      n5: 676.234375 463.8671875
+      n: 656.234375 419.8671875
+      n3: 676.234375 415.8671875
+      n6: 676.234375 487.8671875
+      n2: 676.234375 391.8671875
+  }
+
+  method Point {
+    in x: f64
+    in y: f64
+    point: pack(x <- x, y <- y) -> (point: Point)
+    out point: Point <- point
+    layout
+      x: 79.21484375 40.66796875
+      point: 89.21484375 117.66796875
+      y: 99.21484375 40.66796875
+  }
+
+  method Size {
+    in width: f64
+    in height: f64
+    size: pack(width <- width, height <- height) -> (size: Size)
+    out size: Size <- size
+    layout
+      size: 117.71875 120.4921875
+      width: 107.71875 43.4921875
+      height: 127.71875 43.4921875
+  }
+
+  method Rectangle {
+    in x: f64
+    in y: f64
+    in width: f64
+    in height: f64
+    rectangle: pack(x <- x, y <- y, width <- width, height <- height) -> (rectangle: Rectangle)
+    out rectangle: Rectangle <- rectangle
+    layout
+      x: 88.20703125 47.53515625
+      rectangle: 157.20703125 124.53515625
+      y: 134.20703125 47.53515625
+      width: 180.20703125 47.53515625
+      height: 226.20703125 47.53515625
+  }
+
+  method drawRectangle {
+    in x: f64
+    in y: f64
+    in width: f64
+    in height: f64
+    n: column {
+      n2: column {
+        message: text(x <- x, y <- y, width <- width, height <- height) -> (message: String)
+          |
+          Rectangle x=\{x}, y=\{y}, width=\{width}, height=\{height}
+          |
+        println: println(in0 <- message)
+      }
+    }
+    layout
+      x: 125.4 39
+      y: 198.8 39
+      width: 272.20000000000005 39
+      height: 345.6 39
+      n2: 237.640625 106.58984375
+      n: 213.8203125 105.390625
+      message: 235.2890625 121.390625 367 32
+      println: 235.2890625 149.390625
+  }
+
+  method example1 {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    rectangle: pack(x <- x, y <- y, width <- width, height <- height) -> (rectangle: Rectangle)
+    parts: unpack(rectangle <- rectangle) -> (x0: f64, y0: f64, width0: f64, height0: f64)
+    drawRectangle: drawRectangle(x <- parts.x0, y <- parts.y0, width <- parts.width0, height <- parts.height0)
+    layout
+      width: 271.55078125 44
+      parts: 229.015625 313.92578125
+      y: 179.55078125 44
+      height: 363.55078125 44
+      drawRectangle: 229.015625 395.92578125
+      x: 87.55078125 44
+      rectangle: 225.55078125 126
+  }
+
+  method example5 {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    rectangle: Rectangle(x <- x, y <- y, width <- width, height <- height) -> (rectangle: Rectangle)
+    drawRectangle: drawRectangle(pack rectangle <- rectangle)
+    layout
+      y: 194.328125 64.875
+      rectangle: 240.328125 152.875
+      width: 286.328125 64.875
+      height: 378.328125 64.875
+      x: 102.328125 64.875
+      drawRectangle: 243.11328125 376.97265625
+  }
+
+  method example2 {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    drawRectangle: drawRectangle(x <- x, y <- y, width <- width, height <- height)
+    layout
+      drawRectangle: 210.4609375 132
+      x: 72.4609375 44
+      height: 348.4609375 44
+      y: 164.4609375 44
+      width: 256.4609375 44
+  }
+
+  method example3 {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    point: Point(x <- x, y <- y) -> (point: Point)
+    size: Size(width <- width, height <- height) -> (size: Size)
+    drawRectangle: drawRectangle(pack point <- point, pack size <- size)
+    layout
+      x: 89.69140625 44
+      size: 273.69140625 132
+      height: 365.69140625 44
+      width: 263.69140625 44
+      y: 191.69140625 44
+      point: 181.69140625 132
+      drawRectangle: 227.69140625 220
+  }
+
+  method example4 {
+    x: 100 -> (x: f64)
+    y: 200 -> (y: f64)
+    width: 300 -> (width: f64)
+    height: 400 -> (height: f64)
+    point: Point(x <- x, y <- y) -> (point: Point)
+    size: Size(width <- width, height <- height) -> (size: Size)
+    rectangle: Rectangle(pack point <- point, pack size <- size) -> (rectangle: Rectangle)
+    drawRectangle: drawRectangle(pack rectangle <- rectangle)
+    layout
+      y: 175.87109375 44
+      size: 257.87109375 132
+      height: 349.87109375 44
+      width: 247.87109375 44
+      point: 165.87109375 132
+      drawRectangle: 211.87109375 308
+      rectangle: 211.87109375 220
+      x: 73.87109375 44
+  }
+}
