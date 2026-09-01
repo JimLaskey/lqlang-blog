@@ -6,12 +6,21 @@
     <description>Recent content in Programming on LQ Programming Language</description>
     <generator>Hugo -- 0.157.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 12 May 2026 10:00:00 -0300</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 13:22:35 -0300</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Color Wheel</title>
+      <link>http://localhost:1313/blog/color-wheel/</link>
+      <pubDate>Tue, 01 Sep 2026 13:22:35 -0300</pubDate>
+      <guid>http://localhost:1313/blog/color-wheel/</guid>
+      <description>&lt;p&gt;I apologize for the delay since my last post. Creating a programming language can be a taxing endeavour but it can alo be a lot of fun. I&amp;rsquo;ve been rewriting LQ in itself (hence the distraction). Along the way I come across some challenges and those challenges lead to some nice solutions.&lt;/p&gt;
+&lt;h2 id=&#34;the-color-wheel&#34;&gt;The Color Wheel&lt;/h2&gt;
+&lt;p&gt;One of the nice things about LQ is the inherent use of iterables. What if you want to create a color wheel. Naturally, you want to iterate through the hues against lightness.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Packing Spaghetti</title>
       <link>http://localhost:1313/blog/packing-spaghetti/</link>
-      <pubDate>Tue, 12 May 2026 10:00:00 -0300</pubDate>
+      <pubDate>Mon, 01 Jun 2026 10:00:00 -0300</pubDate>
       <guid>http://localhost:1313/blog/packing-spaghetti/</guid>
       <description>&lt;p&gt;The most common objection to visual programming languages is the spaghetti problem. As programs grow, connections multiply, wires cross, and the diagram that was supposed to be clearer than text becomes a tangled mess. The criticism is fair — it&amp;rsquo;s a real problem. Here&amp;rsquo;s an example of AI-generated LQ code that demonstrates exactly this:&lt;/p&gt;
 &lt;figure style=&#34;text-align: center;&#34;&gt;

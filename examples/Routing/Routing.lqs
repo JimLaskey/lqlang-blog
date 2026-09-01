@@ -7,33 +7,9 @@ space Routing {
     point: Point(x <- x, y <- y) -> (point: Point)
     size: Size(width <- width, height <- height) -> (size: Size)
     rectangle: Rectangle(pack point <- point, pack size <- size) -> (rectangle: Rectangle)
-    drawRectangle: drawRectangle(x <- x, y <- y, width <- width, height <- height)
-    drawRectangle2: drawRectangle(pack point <- point, pack size <- size)
-    drawRectangle3: drawRectangle(pack rectangle <- rectangle)
-    n: column {
-      n2: `windowMenuClear()`
-      n3: `windowMenuAddTopLevel("File")`
-      n4: `windowMenuAddTopLevel("Edit")`
-      n5: `windowMenuAddTopLevel("Find")`
-      n6: `windowMenuApply()`
-    }
-    layout
-      y: 208.79985975961176 46.70703125
-      point: 129.33106570192234 146.79296875
-      drawRectangle2: 239.04296875 233.546875
-      size: 221.33106570192234 146.79296875
-      drawRectangle3: 107.04296875 310.70703125
-      rectangle: 107.04296875 233.546875
-      x: 116.79985975961173 46.70703125
-      width: 300.79985975961176 46.70703125
-      height: 392.79985975961176 46.70703125
-      drawRectangle: 340.83106570192234 146.79296875
-      n4: 676.234375 439.8671875
-      n5: 676.234375 463.8671875
-      n: 656.234375 419.8671875
-      n3: 676.234375 415.8671875
-      n6: 676.234375 487.8671875
-      n2: 676.234375 391.8671875
+    drawRectangle(x <- x, y <- y, width <- width, height <- height)
+    drawRectangle(pack point <- point, pack size <- size)
+    drawRectangle(pack rectangle <- rectangle)
   }
 
   method Point {
@@ -41,10 +17,6 @@ space Routing {
     in y: f64
     point: pack(x <- x, y <- y) -> (point: Point)
     out point: Point <- point
-    layout
-      x: 79.21484375 40.66796875
-      point: 89.21484375 117.66796875
-      y: 99.21484375 40.66796875
   }
 
   method Size {
@@ -52,10 +24,6 @@ space Routing {
     in height: f64
     size: pack(width <- width, height <- height) -> (size: Size)
     out size: Size <- size
-    layout
-      size: 117.71875 120.4921875
-      width: 107.71875 43.4921875
-      height: 127.71875 43.4921875
   }
 
   method Rectangle {
@@ -78,24 +46,19 @@ space Routing {
     in y: f64
     in width: f64
     in height: f64
-    n: column {
-      n2: column {
+    column {
+      column {
         message: text(x <- x, y <- y, width <- width, height <- height) -> (message: String)
           |
           Rectangle x=\{x}, y=\{y}, width=\{width}, height=\{height}
           |
-        println: println(in0 <- message)
+        println(in0 <- message)
       }
     }
     layout
-      x: 125.4 39
-      y: 198.8 39
-      width: 272.20000000000005 39
-      height: 345.6 39
-      n2: 237.640625 106.58984375
-      n: 213.8203125 105.390625
-      message: 235.2890625 121.390625 367 32
-      println: 235.2890625 149.390625
+      height: 365.6 39
+      width: 292.20000000000005 39
+      y: 218.8 39
   }
 
   method example1 {
