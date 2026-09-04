@@ -136,7 +136,7 @@ This post is one of those solutions: a complete graphical application — a colo
     <img alt="Color wheel main method" width="55%" src="/blog/images/tutorial8.1.png">
     <figcaption>Color wheel <code>main</code> method</figcaption>
 </figure>
-<p><code>runReactiveApp</code> node constructs a new window with the title &ldquo;ColorWheel&rdquo; and a size of 640×640, then invokes the abutted closure to handle events.</p>
+<p>The <code>runReactiveApp</code> expression node constructs a new window with the title &ldquo;ColorWheel&rdquo; and a size of 640×640, then invokes the abutted closure to handle events.</p>
 <p>The <code>drawRing</code> method has a forEach input terminal, iterating through the range <code>0..4</code> — one invocation for each value <code>0, 1, 2, 3</code>, representing the four concentric rings. This is the iteration model from <a href="/blog/iteration-through-terminal-annotation">Iteration Through Terminal Annotation</a> put to practical use: a single terminal annotation turns a method call into a loop.</p>
 <h2 id="drawing-a-ring">Drawing a Ring<a hidden class="anchor" aria-hidden="true" href="#drawing-a-ring">#</a></h2>
 <figure style="text-align: center;">

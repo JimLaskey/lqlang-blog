@@ -19,7 +19,7 @@ The `main` method sets up the window and handles the event loop.
     <figcaption>Color wheel <code>main</code> method</figcaption>
 </figure>
 
-`runReactiveApp` node constructs a new window with the title "ColorWheel" and a size of 640×640, then invokes the abutted closure to handle events.
+The `runReactiveApp` expression node constructs a new window with the title "ColorWheel" and a size of 640×640, then invokes the abutted closure to handle events.
 
 The `drawRing` method has a forEach input terminal, iterating through the range `0..4` — one invocation for each value `0, 1, 2, 3`, representing the four concentric rings. This is the iteration model from [Iteration Through Terminal Annotation](/blog/iteration-through-terminal-annotation) put to practical use: a single terminal annotation turns a method call into a loop.
 
