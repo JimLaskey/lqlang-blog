@@ -19,14 +19,14 @@ The `main` method sets up the window and handles the event loop.
     <figcaption>Color wheel <code>main</code> method</figcaption>
 </figure>
 
-`runApp` constructs a new window with the title "ColorWheel" and a size of 640×640, then invokes the abutted closure to handle events. The `+1` node on the left updates the integer state for the next event cycle — an app can use whatever state type suits its needs. `windowFill` blacks out the window at the start of each frame.
+`runReactiveApp` node constructs a new window with the title "ColorWheel" and a size of 640×640, then invokes the abutted closure to handle events.
 
-The core of the method is the call to `drawRing`. Note the forEach input terminal on the right side of `drawRing`, iterating through the range `0..4` — one invocation for each value `0, 1, 2, 3`, representing the four concentric rings. This is the iteration model from [Iteration Through Terminal Annotation](/blog/iteration-through-terminal-annotation) put to practical use: a single terminal annotation turns a method call into a loop.
+The `drawRing` method has a forEach input terminal, iterating through the range `0..4` — one invocation for each value `0, 1, 2, 3`, representing the four concentric rings. This is the iteration model from [Iteration Through Terminal Annotation](/blog/iteration-through-terminal-annotation) put to practical use: a single terminal annotation turns a method call into a loop.
 
 ## Drawing a Ring
 
 <figure style="text-align: center;">
-    <img alt="Color wheel drawRing method" width="45%" src="/blog/images/tutorial8.2.png">
+    <img alt="Color wheel drawRing method" width="55%" src="/blog/images/tutorial8.2.png">
     <figcaption>Color wheel <code>drawRing</code> method</figcaption>
 </figure>
 
@@ -39,7 +39,7 @@ Two nested iterations — rings and wedges — and neither one uses a loop const
 ## Drawing a Wedge
 
 <figure style="text-align: center;">
-    <img alt="Color wheel drawWedge method" width="45%" src="/blog/images/tutorial8.3.png">
+    <img alt="Color wheel drawWedge method" width="60%" src="/blog/images/tutorial8.3.png">
     <figcaption>Color wheel <code>drawWedge</code> method</figcaption>
 </figure>
 
@@ -47,12 +47,12 @@ Two nested iterations — rings and wedges — and neither one uses a loop const
 
 The two polar coordinates, along with the radius, feed into an SVG-style path string via interpolation: `"M 320 320 L \{x1} \{y1} A \{radius} \{radius} 0 0 1 \{x2} \{y2} Z"`. That path — a line from center to the first point, an arc to the second point, and back to center — defines the wedge shape.
 
-Finally, `windowFillPath` fills the wedge with an HSL color constructed from the hue angle and lightness. The hue rotates around the wheel. The lightness varies by ring. The saturation is fixed at 0.9.
+The `fill` node constructs a paint that matches the hue angle color and ring lightness. The saturation is fixed at 0.9. Finally, `windowFillPath` fills the wedge with the paint.
 
 ## Polar Conversion
 
 <figure style="text-align: center;">
-    <img alt="Color wheel polar method" width="55%" src="/blog/images/tutorial8.4.png">
+    <img alt="Color wheel polar method" width="70%" src="/blog/images/tutorial8.4.png">
     <figcaption>Color wheel <code>polar</code> method</figcaption>
 </figure>
 
@@ -63,11 +63,11 @@ Notice the parallelism — the `cos` and `sin` computations sit side by side wit
 ## The Result
 
 <figure style="text-align: center;">
-    <img alt="Color wheel window" width="50%" src="/blog/images/tutorial8.5.png">
+    <img alt="Color wheel window" width="65%" src="/blog/images/tutorial8.5.png">
     <figcaption>the color wheel — four rings, 60 wedges each, 240 filled paths</figcaption>
 </figure>
 
-Four methods. A few dozen nodes. 240 filled arc paths rendered in real time. The color wheel iterates through hues and lightness using nothing but ranges, forEach terminals, and basic trigonometry.
+Four methods. A few dozen nodes. The color wheel iterates through hues and lightness using nothing but ranges, forEach terminals, and basic trigonometry.
 
 ## What This Demonstrates
 
@@ -77,7 +77,7 @@ The color wheel is a small program, but it exercises a surprising range of LQ fe
 
 **Step ranges.** The `0..360:6` range produces 60 values at 6-degree increments. StepRange composes naturally with forEach — the iteration granularity is controlled by the range, not by the loop.
 
-**Closures.** The `runApp` event handler is an abutted closure — the application's event loop expressed as a closure attached to the window constructor.
+**Closures.** The `runReactiveApp` event handler is an abutted closure — the application's event loop expressed as a closure attached to the window constructor.
 
 **String interpolation.** The SVG path string is assembled from computed coordinates using `\{...}` interpolation — the same feature introduced in [The LQ Type System](/blog/lq-type-system).
 

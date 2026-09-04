@@ -136,11 +136,11 @@ This post is one of those solutions: a complete graphical application — a colo
     <img alt="Color wheel main method" width="55%" src="/blog/images/tutorial8.1.png">
     <figcaption>Color wheel <code>main</code> method</figcaption>
 </figure>
-<p><code>runApp</code> constructs a new window with the title &ldquo;ColorWheel&rdquo; and a size of 640×640, then invokes the abutted closure to handle events. The <code>+1</code> node on the left updates the integer state for the next event cycle — an app can use whatever state type suits its needs. <code>windowFill</code> blacks out the window at the start of each frame.</p>
-<p>The core of the method is the call to <code>drawRing</code>. Note the forEach input terminal on the right side of <code>drawRing</code>, iterating through the range <code>0..4</code> — one invocation for each value <code>0, 1, 2, 3</code>, representing the four concentric rings. This is the iteration model from <a href="/blog/iteration-through-terminal-annotation">Iteration Through Terminal Annotation</a> put to practical use: a single terminal annotation turns a method call into a loop.</p>
+<p><code>runReactiveApp</code> node constructs a new window with the title &ldquo;ColorWheel&rdquo; and a size of 640×640, then invokes the abutted closure to handle events.</p>
+<p>The <code>drawRing</code> method has a forEach input terminal, iterating through the range <code>0..4</code> — one invocation for each value <code>0, 1, 2, 3</code>, representing the four concentric rings. This is the iteration model from <a href="/blog/iteration-through-terminal-annotation">Iteration Through Terminal Annotation</a> put to practical use: a single terminal annotation turns a method call into a loop.</p>
 <h2 id="drawing-a-ring">Drawing a Ring<a hidden class="anchor" aria-hidden="true" href="#drawing-a-ring">#</a></h2>
 <figure style="text-align: center;">
-    <img alt="Color wheel drawRing method" width="45%" src="/blog/images/tutorial8.2.png">
+    <img alt="Color wheel drawRing method" width="55%" src="/blog/images/tutorial8.2.png">
     <figcaption>Color wheel <code>drawRing</code> method</figcaption>
 </figure>
 <p><code>drawRing</code> takes the ring number and computes two things from it: the distance from center (<code>0.32 + cast(ring) * 0.16</code>) and the lightness of the ring (<code>255 - band * 63</code>). Inner rings are lighter, outer rings are darker.</p>
@@ -148,30 +148,30 @@ This post is one of those solutions: a complete graphical application — a colo
 <p>Two nested iterations — rings and wedges — and neither one uses a loop construct. The forEach terminals handle both.</p>
 <h2 id="drawing-a-wedge">Drawing a Wedge<a hidden class="anchor" aria-hidden="true" href="#drawing-a-wedge">#</a></h2>
 <figure style="text-align: center;">
-    <img alt="Color wheel drawWedge method" width="45%" src="/blog/images/tutorial8.3.png">
+    <img alt="Color wheel drawWedge method" width="60%" src="/blog/images/tutorial8.3.png">
     <figcaption>Color wheel <code>drawWedge</code> method</figcaption>
 </figure>
 <p><code>drawWedge</code> is where the geometry happens. The method converts the wedge angle from degrees to radians via <code>cast(deg)</code>, then computes two points using the <code>polar</code> method — one at the current angle and one at the angle plus 7 degrees (slightly overlapping to avoid gaps between wedges).</p>
 <p>The two polar coordinates, along with the radius, feed into an SVG-style path string via interpolation: <code>&quot;M 320 320 L \{x1} \{y1} A \{radius} \{radius} 0 0 1 \{x2} \{y2} Z&quot;</code>. That path — a line from center to the first point, an arc to the second point, and back to center — defines the wedge shape.</p>
-<p>Finally, <code>windowFillPath</code> fills the wedge with an HSL color constructed from the hue angle and lightness. The hue rotates around the wheel. The lightness varies by ring. The saturation is fixed at 0.9.</p>
+<p>The <code>fill</code> node constructs a paint that matches the hue angle color and ring lightness. The saturation is fixed at 0.9. Finally, <code>windowFillPath</code> fills the wedge with the paint.</p>
 <h2 id="polar-conversion">Polar Conversion<a hidden class="anchor" aria-hidden="true" href="#polar-conversion">#</a></h2>
 <figure style="text-align: center;">
-    <img alt="Color wheel polar method" width="55%" src="/blog/images/tutorial8.4.png">
+    <img alt="Color wheel polar method" width="70%" src="/blog/images/tutorial8.4.png">
     <figcaption>Color wheel <code>polar</code> method</figcaption>
 </figure>
 <p>The <code>polar</code> method is straightforward: take a radius and an angle in degrees, convert the angle to radians (<code>angle * pi() / 180.0</code>), then compute <code>x = 320.0 + radius * cos(angle)</code> and <code>y = 320.0 + radius * sin(angle)</code>. The two output parameters return the x and y coordinates.</p>
 <p>Notice the parallelism — the <code>cos</code> and <code>sin</code> computations sit side by side with no dependency between them. Both feed from the same angle and radius inputs. In LQ, that independence is visible in the graph and means the two computations can run concurrently. In a text language, the same independence exists but is invisible — the reader has to verify it by reading both lines.</p>
 <h2 id="the-result">The Result<a hidden class="anchor" aria-hidden="true" href="#the-result">#</a></h2>
 <figure style="text-align: center;">
-    <img alt="Color wheel window" width="50%" src="/blog/images/tutorial8.5.png">
+    <img alt="Color wheel window" width="65%" src="/blog/images/tutorial8.5.png">
     <figcaption>the color wheel — four rings, 60 wedges each, 240 filled paths</figcaption>
 </figure>
-<p>Four methods. A few dozen nodes. 240 filled arc paths rendered in real time. The color wheel iterates through hues and lightness using nothing but ranges, forEach terminals, and basic trigonometry.</p>
+<p>Four methods. A few dozen nodes. The color wheel iterates through hues and lightness using nothing but ranges, forEach terminals, and basic trigonometry.</p>
 <h2 id="what-this-demonstrates">What This Demonstrates<a hidden class="anchor" aria-hidden="true" href="#what-this-demonstrates">#</a></h2>
 <p>The color wheel is a small program, but it exercises a surprising range of LQ features:</p>
 <p><strong>Iteration through terminal annotation.</strong> Two nested loops — rings and wedges — expressed through forEach terminals on <code>drawRing</code> and <code>drawWedge</code>. No loop syntax. No counters. Just annotated terminals and ranges.</p>
 <p><strong>Step ranges.</strong> The <code>0..360:6</code> range produces 60 values at 6-degree increments. StepRange composes naturally with forEach — the iteration granularity is controlled by the range, not by the loop.</p>
-<p><strong>Closures.</strong> The <code>runApp</code> event handler is an abutted closure — the application&rsquo;s event loop expressed as a closure attached to the window constructor.</p>
+<p><strong>Closures.</strong> The <code>runReactiveApp</code> event handler is an abutted closure — the application&rsquo;s event loop expressed as a closure attached to the window constructor.</p>
 <p><strong>String interpolation.</strong> The SVG path string is assembled from computed coordinates using <code>\{...}</code> interpolation — the same feature introduced in <a href="/blog/lq-type-system">The LQ Type System</a>.</p>
 <p><strong>Parallelism.</strong> The <code>polar</code> method&rsquo;s <code>cos</code> and <code>sin</code> computations are visibly independent. The <code>drawRing</code> method&rsquo;s lightness and distance computations are independent. The graph shows the parallelism. The compiler can exploit it.</p>
 <p><strong>Graphics.</strong> LQ&rsquo;s UI library — built on Skia — handles window management, path construction, and HSL color fills. The library is the separate layer mentioned in the type system post, built on top of the core types.</p>
